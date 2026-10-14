@@ -8,7 +8,9 @@
   function setOpen(open) {
     header.classList.toggle("open", open);
     toggle.setAttribute("aria-expanded", String(open));
-    toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    const label = open ? "nav.close" : "nav.open";
+    toggle.dataset.i18nAria = label;
+    toggle.setAttribute("aria-label", window.I18N ? window.I18N.t(label) : open ? "Close menu" : "Open menu");
   }
 
   // measure the full-width layout, then collapse if the links would collide with the logo
@@ -16,7 +18,8 @@
     header.classList.remove("compact");
     const cs = getComputedStyle(header);
     const room = header.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
-    const compact = logo.offsetWidth + 32 + nav.scrollWidth > room;
+    const langMenu = header.querySelector(".lang-menu");
+    const compact = logo.offsetWidth + 32 + nav.scrollWidth + (langMenu ? langMenu.offsetWidth + 16 : 0) > room;
     header.classList.toggle("compact", compact);
     if (!compact) setOpen(false);
   }
@@ -29,6 +32,7 @@
   });
 
   new ResizeObserver(fit).observe(header);
+  window.I18N?.onChange(fit);   // translated labels change the menu's width
   document.fonts?.ready.then(fit);   // web font changes link widths once it loads
   fit();
 })();

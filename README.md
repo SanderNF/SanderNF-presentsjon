@@ -7,6 +7,14 @@ Edit **`config.js`** — name, taglines, about text, skills, projects, experienc
 
 Colors are CSS variables at the top of `style.css` (`--accent`, `--accent-2`, `--accent-3`).
 
+## Languages
+The site can be shown in English, Norwegian or 1337 (globe icon in the top bar, or the buttons in the hamburger menu). The choice is remembered in the browser, and Norwegian browsers get Norwegian by default.
+
+- **Your content:** write translatable text in `config.js` as `{ en: "…", no: "…" }`. A plain string is the same in every language.
+- **Interface text:** headings, buttons and labels live in `STRINGS` in `i18n.js`.
+- **1337:** generated automatically from the English text.
+- **Kept in their original language:** the terminal (commands and files), `album/album.json` and the reference letter. The terminal's `lang` command switches the page language.
+
 ## Projects
 Each project in `config.js` gets its own page at `project.html?p=<name>`, with a `README.md` tab built from `description` + `details`. Set `report` to an experience `place` (e.g. `"Spenn"`) to add a `report.txt` tab showing that entry's reference letter.
 

@@ -5,20 +5,21 @@
   const $ = (sel) => document.querySelector(sel);
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
-  document.querySelectorAll("[data-bind]").forEach((el) => (el.textContent = C[el.dataset.bind]));
+  const { t, L } = window.I18N;
+  document.querySelectorAll("[data-bind]").forEach((el) => (el.textContent = L(C[el.dataset.bind])));
   $("#year").textContent = new Date().getFullYear();
 
   let photos = [], visible = [], activeTag = "all", current = 0;
 
   const fmtDate = (d) => {
     const dt = new Date(d);
-    return isNaN(dt) ? d : dt.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+    return isNaN(dt) ? d : dt.toLocaleDateString(window.I18N.locale(), { year: "numeric", month: "short", day: "numeric" });
   };
 
   fetch(ALBUM_DIR + "album.json", { cache: "no-cache" })
     .then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
     .then((data) => {
-      document.title = `${data.title || "Photo album"} — ${C.name}`;
+      document.title = `${data.title || t("album.untitled")} — ${C.name}`;
       if (data.title) $("#album-title").textContent = data.title;
       if (data.description) $("#album-desc").textContent = data.description;
       // newest first; photos without a date go last
@@ -37,7 +38,7 @@
   function renderFilters() {
     const tags = ["all", ...new Set(photos.flatMap((p) => p.tags || []))];
     $("#filters").innerHTML = tags
-      .map((t) => `<button class="chip${t === activeTag ? " on" : ""}" data-tag="${esc(t)}">#${esc(t)}</button>`)
+      .map((tag) => `<button class="chip${tag === activeTag ? " on" : ""}" data-tag="${esc(tag)}">#${esc(tag === "all" ? t("album.all") : tag)}</button>`)
       .join("");
   }
 
@@ -51,7 +52,7 @@
 
   function render() {
     visible = activeTag === "all" ? photos : photos.filter((p) => (p.tags || []).includes(activeTag));
-    $("#count").textContent = `${visible.length} item${visible.length === 1 ? "" : "s"}`;
+    $("#count").textContent = t(visible.length === 1 ? "album.count.one" : "album.count", { n: visible.length });
     $("#gallery").innerHTML = visible
       .map((p, i) => `
         <button class="photo" data-i="${i}" aria-label="Open ${esc(p.title || p.file)}">
@@ -72,6 +73,15 @@
     if (i >= 0) open(i);
   }
   addEventListener("hashchange", openFromHash);
+
+  // language change: re-render labels, and the open photo's details
+  window.I18N.onChange(() => {
+    document.querySelectorAll("[data-bind]").forEach((el) => (el.textContent = L(C[el.dataset.bind])));
+    if (!photos.length) return;
+    renderFilters();
+    render();
+    if (!$("#lightbox").hidden) open(current);
+  });
 
   // ---------- lightbox ----------
   const lb = $("#lightbox");
@@ -96,7 +106,7 @@
     $("#lb-meta").innerHTML =
       `<h3>${esc(p.title || p.file)}</h3>` +
       (p.description ? `<p>${esc(p.description)}</p>` : "") +
-      (rows.length ? `<dl>${rows.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("")}</dl>` : "") +
+      (rows.length ? `<dl>${rows.map(([k, v]) => `<dt>${esc(t("meta." + k))}</dt><dd>${esc(v)}</dd>`).join("")}</dl>` : "") +
       (p.tags?.length ? `<div class="tags">${p.tags.map((t) => `<span>#${esc(t)}</span>`).join("")}</div>` : "") +
       `<small class="lb-pos">[${current + 1}/${visible.length}]</small>`;
     if (lb.hidden) { lastFocus = document.activeElement; lb.hidden = false; document.body.style.overflow = "hidden"; $("#lb-close").focus(); }

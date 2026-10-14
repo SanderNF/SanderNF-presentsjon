@@ -1,35 +1,37 @@
 // ============================================================
 //  EDIT THIS FILE — all personal content for the site lives here
 // ============================================================
+// Translatable text is written as { en: "…", no: "…" }. A plain string is used
+// for every language. The 1337 language is generated from the English text.
 window.SITE_CONFIG = {
   name: "Sander NF",
   handle: "sandernf",
-  role: "IT student & developer",
-  location: "Norway",
+  role: { en: "IT student & developer", no: "IT-elev og utvikler" },
+  location: { en: "Norway", no: "Norge" },
   // Lines cycled by the typing effect in the hero
   taglines: [
-    "Migrating Docker Swarm to Kubernetes.",
-    "Turning messy data into insight with AI.",
-    "Running a homelab on Proxmox.",
-    "I use Arch, btw.",
+    { en: "Migrating Docker Swarm to Kubernetes.", no: "Migrerer Docker Swarm til Kubernetes." },
+    { en: "Turning messy data into insight with AI.", no: "Gjør rotete data om til innsikt med KI." },
+    { en: "Running a homelab on Proxmox.", no: "Kjører en homelab på Proxmox." },
+    { en: "I use Arch, btw.", no: "Jeg bruker Arch, btw." },
   ],
   about: [
-    "Hi, I'm Sander — an IT and media production student at Kuben VGS who loves coding, hardware and figuring out how things work under the hood.",
-    "I've done IT internships at Statens Pensjonskasse, where I worked on moving services from Docker Swarm to Kubernetes, and at Spenn, where I used AI to turn large amounts of qualitative data into insight.",
-    "In my spare time I build PCs, run a homelab, and tinker with microelectronics and 3D printing.",
+    { en: "Hi, I'm Sander — an IT and media production student at Kuben VGS who loves coding, hardware and figuring out how things work under the hood.", no: "Hei, jeg er Sander — elev på informasjonsteknologi og medieproduksjon ved Kuben VGS. Jeg elsker koding, maskinvare og å finne ut hvordan ting fungerer under panseret." },
+    { en: "I've done IT internships at Statens pensjonskasse, where I worked on their new development platform with Docker, Kubernetes and Go, and at Spenn, where I used AI to turn large amounts of qualitative data into insight.", no: "Jeg har hatt IT-praksis hos Statens pensjonskasse, der jeg jobbet med deres nye utviklingsplattform med Docker, Kubernetes og Go, og hos Spenn, der jeg brukte KI til å gjøre store mengder kvalitative data om til innsikt." },
+    { en: "In my spare time I build PCs, run a homelab, and tinker with microelectronics and 3D printing.", no: "På fritiden bygger jeg PC-er, drifter en homelab og tukler med mikroelektronikk og 3D-printing." },
   ],
   stats: [
-    { value: "2", label: "IT internships" },
-    { value: "3", label: "workplaces" },
-    { value: "btw", label: "I use Arch" },
+    { value: "2", label: { en: "IT internships", no: "IT-praksiser" } },
+    { value: "3", label: { en: "workplaces", no: "arbeidsplasser" } },
+    { value: "btw", label: { en: "I use Arch", no: "jeg bruker Arch" } },
   ],
   skills: {
-    languages: ["LUA", "JavaScript", "Python", "SQL"],
+    languages: ["LUA", "JavaScript", "Python", "SQL", "Go"],
     frontend: ["HTML/CSS"],
     backend: ["Node.js", "REST"],
-    infra: ["Docker", "Kubernetes (k8s)", "GitHub Actions", "Proxmox"],
+    infra: ["Docker", "Kubernetes (k8s, kind)", "GitHub Actions", "Proxmox"],
     "data & ai": ["Snowflake", "Streamlit", "Jupyter Notebook"],
-    tools: ["Git", "Linux (arch btw)", "Figma"],
+    tools: ["Git", "Linux (arch btw)", "JIRA", "Confluence", "Figma"],
   },
   // Each project gets its own page (project.html?p=<name>).
   // `link` is optional — leave it out for work that isn't public.
@@ -38,63 +40,75 @@ window.SITE_CONFIG = {
   projects: [
     {
       name: "twitch-chat-overlay",
-      description: "A chat box overlay for Twitch streams. Runs locally in Python and plugs into OBS Studio as an HTTP URL.",
+      description: { en: "A chat box overlay for Twitch streams. Runs locally in Python and plugs into OBS Studio as an HTTP URL.", no: "En chatboks-overlay for Twitch-strømmer. Kjører lokalt i Python og legges inn i OBS Studio som en HTTP-URL." },
       tech: ["Python", "HTTP", "OBS"],
       link: "https://github.com/SanderNF/Twitch-Chat",
-      period: "Sep 2025 — now",
+      period: { en: "Sep 2025 — now", no: "sep. 2025 — nå" },
       details: [
-        "A side project: a chat box overlay for Twitch streams that runs locally in Python.",
-        "The overlay is served over HTTP, so it can be added straight into OBS Studio (or any streaming software) as a browser source URL.",
+        { en: "A side project: a chat box overlay for Twitch streams that runs locally in Python.", no: "Et fritidsprosjekt: en chatboks-overlay for Twitch-strømmer som kjører lokalt i Python." },
+        { en: "The overlay is served over HTTP, so it can be added straight into OBS Studio (or any streaming software) as a browser source URL.", no: "Overlayen serveres over HTTP, så den kan legges rett inn i OBS Studio (eller annen strømmeprogramvare) som en nettleserkilde-URL." },
       ],
     },
     {
       name: "homelab",
-      description: "An old PC running Proxmox, hosting VMs for a Minecraft server, a Palworld server and a web server. Out-of-band management via IP-KVM, a Cisco 16-port gigabit switch and an APC Smart-UPS.",
+      description: { en: "An old PC running Proxmox, hosting VMs for a Minecraft server, a Palworld server and a web server. Out-of-band management via IP-KVM, a Cisco 16-port gigabit switch and an APC Smart-UPS.", no: "En gammel PC som kjører Proxmox, med VM-er for en Minecraft-server, en Palworld-server og en webserver. Fjernstyring via IP-KVM, en Cisco 16-ports gigabit-switch og en APC Smart-UPS." },
       tech: ["Proxmox", "Networking", "IP-KVM"],
       details: [
-        "An old PC running Proxmox, a hypervisor for virtual machines. Among other things it hosts a Minecraft server, a Palworld server and a web server.",
-        "The server has \"lights out\" management through an IP-KVM (internet protocol keyboard, video, mouse), so it can be restarted or reconfigured remotely if something goes wrong at the hardware level.",
-        "It's connected through a Cisco WebView 16-port gigabit switch and backed by an APC Smart-UPS (uninterruptible power supply).",
+        { en: "An old PC running Proxmox, a hypervisor for virtual machines. Among other things it hosts a Minecraft server, a Palworld server and a web server.", no: "En gammel PC som kjører Proxmox, en hypervisor for virtuelle maskiner. Blant annet kjører den en Minecraft-server, en Palworld-server og en webserver." },
+        { en: "The server has \"lights out\" management through an IP-KVM (internet protocol keyboard, video, mouse), so it can be restarted or reconfigured remotely if something goes wrong at the hardware level.", no: "Serveren har «lights out»-administrasjon gjennom en IP-KVM (internet protocol keyboard, video, mouse), så den kan startes på nytt eller rekonfigureres eksternt hvis noe går galt på maskinvarenivå." },
+        { en: "It's connected through a Cisco WebView 16-port gigabit switch and backed by an APC Smart-UPS (uninterruptible power supply).", no: "Den er koblet til en Cisco WebView 16-ports gigabit-switch og sikret med en APC Smart-UPS (avbruddsfri strømforsyning)." },
       ],
     },
     {
       name: "support-insights",
-      description: "Internship project at Spenn: used AI in Snowflake to categorise support requests and built a Streamlit dashboard comparing what the chatbot solves versus human agents.",
+      description: { en: "Internship project at Spenn: used AI in Snowflake to categorise support requests and built a Streamlit dashboard comparing what the chatbot solves versus human agents.", no: "Praksisprosjekt hos Spenn: brukte KI i Snowflake til å kategorisere supporthenvendelser, og bygde et Streamlit-dashboard som sammenligner hva chatboten løser med hva ekte agenter løser." },
       tech: ["Snowflake", "AI", "Streamlit"],
-      period: "Oct — Nov 2025",
+      period: { en: "Oct — Nov 2025", no: "okt. — nov. 2025" },
       details: [
-        "Spenn's Customer Care team handles a large volume of support requests, many of them answered by a chatbot. The team needed insight into which kinds of requests the chatbot solves compared to human agents, and a way to follow trends in what users contact them about.",
-        "I structured all the qualitative support data using AI in Snowflake, then built a visualisation dashboard in Streamlit on top of it.",
-        "The dashboard was built so the Customer Care lead can keep using it after the internship ended.",
+        { en: "Spenn's Customer Care team handles a large volume of support requests, many of them answered by a chatbot. The team needed insight into which kinds of requests the chatbot solves compared to human agents, and a way to follow trends in what users contact them about.", no: "Customer Care-teamet i Spenn håndterer et stort volum av supporthenvendelser, og mange av dem besvares av en chatbot. Teamet trengte innsikt i hvilke typer henvendelser chatboten løser sammenlignet med ekte agenter, og en måte å følge trender i hva brukerne kontakter dem om." },
+        { en: "I structured all the qualitative support data using AI in Snowflake, then built a visualisation dashboard in Streamlit on top of it.", no: "Jeg strukturerte all den kvalitative supportdataen ved hjelp av KI i Snowflake, og bygde deretter et visualiseringsdashboard i Streamlit oppå den." },
+        { en: "The dashboard was built so the Customer Care lead can keep using it after the internship ended.", no: "Dashboardet ble bygget slik at Customer Care-lederen kan fortsette å bruke det etter at praksisen var over." },
       ],
       report: "Spenn",
     },
     {
       name: "interview-analysis",
-      description: "Internship project at Spenn: structured unstructured user interviews and built analyses across themes, reusable for future interviews.",
+      description: { en: "Internship project at Spenn: structured unstructured user interviews and built analyses across themes, reusable for future interviews.", no: "Praksisprosjekt hos Spenn: strukturerte ustrukturerte brukerintervjuer og bygde analyser på tvers av temaer, som kan gjenbrukes for fremtidige intervjuer." },
       tech: ["Snowflake", "AI", "Python"],
-      period: "Oct — Nov 2025",
+      period: { en: "Oct — Nov 2025", no: "okt. — nov. 2025" },
       details: [
-        "Spenn regularly runs user interviews to learn how people experience the product, but the result is very unstructured data that's hard to analyse.",
-        "I structured the interview material and built analyses across themes, for example what users see as \"the value of Spenn\", so stakeholders can understand the main findings without reading every interview.",
-        "The solution works for interviews that have already been done and can be reused for future ones.",
-        "At the end of the internship I presented both Spenn projects to the whole tech department.",
+        { en: "Spenn regularly runs user interviews to learn how people experience the product, but the result is very unstructured data that's hard to analyse.", no: "Spenn gjennomfører jevnlig brukerintervjuer for å lære hvordan folk opplever produktet, men resultatet er svært ustrukturert data som er vanskelig å analysere." },
+        { en: "I structured the interview material and built analyses across themes, for example what users see as \"the value of Spenn\", so stakeholders can understand the main findings without reading every interview.", no: "Jeg strukturerte intervjumaterialet og bygde analyser på tvers av temaer, for eksempel hva brukerne ser på som «verdien av Spenn», slik at interessentene kan forstå hovedfunnene uten å lese hvert intervju." },
+        { en: "The solution works for interviews that have already been done and can be reused for future ones.", no: "Løsningen fungerer for intervjuer som allerede er gjennomført, og kan gjenbrukes for fremtidige." },
+        { en: "At the end of the internship I presented both Spenn projects to the whole tech department.", no: "På slutten av praksisperioden presenterte jeg begge Spenn-prosjektene for hele tech-avdelingen." },
       ],
       report: "Spenn",
     },
   ],
   experience: [
     {
-      period: "Jan — Feb 2026",
-      title: "IT intern (3 weeks)",
-      place: "Statens Pensjonskasse",
-      text: "Worked on migrating from Docker Swarm to Kubernetes (k8s), and on automated testing in GitHub Actions. Mostly worked independently, taking part in weekly team meetings. Reference available on request.",
+      period: { en: "Jan — Feb 2026", no: "jan. — feb. 2026" },
+      title: { en: "Developer intern, application platform team (3 weeks)", no: "Utviklerpraktikant, team applikasjonsplattform (3 uker)" },
+      place: "Statens pensjonskasse",
+      text: { en: "Worked on LOS, SPK's new development platform: migrating from Docker Swarm to Kubernetes (k8s, kind), automated testing in GitHub Actions, and some Go. Took part in mob programming sessions and team meetings, and got a change deployed to the ad-hoc test environment.", no: "Jobbet med LOS, Statens pensjonskasses nye utviklingsplattform: migrering fra Docker Swarm til Kubernetes (k8s, kind), automatisert testing i GitHub Actions og litt Go. Deltok i mob-programmering og teammøter, og fikk deployet en endring til ad-hoc-testkjøremiljøet." },
+      // the attest from SPK, quoted as written (date of birth left out)
+      reference: {
+        from: "Tofik Sahraoui, Statens pensjonskasse",
+        language: "Norwegian",
+        sections: [
+          { heading: "Attest for Sander Nybø Flaen", text: "Oslo, 6. mars 2026\nSander Nybø Flaen […] jobbet som utvikler i team applikasjonsplattform i Statens pensjonskasse.\nSander har i perioden februar 2026 jobbet i team applikasjonsplattform." },
+          { heading: "", text: "Han har hovedsakelig jobbet med oppgaver knyttet til plattformen (LOS) som er vår nye utviklingsplattform. Disse har inkludert:\n• Docker container teknologi\n• Felles arbeidsøkter som vi kaller for mob-programmering\n• Han har fått deployet en endring til vårt ad-hoc testkjøremiljø\n• Deltatt på møter som teamet har hatt\n• Jobbet med Go-lang\n• K8s Kind" },
+          { heading: "", text: "Sander har vist stor interesse for å jobbe både med backend og han har løst alle sine oppgaver på en god måte. Som teammedlem så har han i stor grad bidratt med å oppnå teamets mål, både de funksjonelle og tekniske." },
+          { heading: "Teknologi:", text: "Github actions, JIRA, Confluence, Go lang, Kubernetes" },
+          { heading: "", text: "Med vennlig hilsen\nTeamleder Tofik Sahraoui\nStatens pensjonskasse" },
+        ],
+      },
     },
     {
-      period: "Oct — Nov 2025",
-      title: "IT intern (3 weeks)",
+      period: { en: "Oct — Nov 2025", no: "okt. — nov. 2025" },
+      title: { en: "IT intern (3 weeks)", no: "IT-praktikant (3 uker)" },
       place: "Spenn",
-      text: "Automated qualitative data analysis using AI. Worked mostly independently in Snowflake (Jupyter Notebook), and presented both cases to the whole tech department at the end.",
+      text: { en: "Automated qualitative data analysis using AI. Worked mostly independently in Snowflake (Jupyter Notebook), and presented both cases to the whole tech department at the end.", no: "Automatiserte kvalitativ dataanalyse ved hjelp av KI. Jobbet for det meste selvstendig i Snowflake (Jupyter Notebook), og presenterte begge casene for hele tech-avdelingen til slutt." },
       // shown as an expandable box under the entry
       reference: {
         from: "Pål, Spenn",
@@ -110,22 +124,33 @@ window.SITE_CONFIG = {
       },
     },
     {
-      period: "Jan 2025",
-      title: "Job shadowing (6 days)",
+      period: { en: "Jan 2025", no: "jan. 2025" },
+      title: { en: "Job shadowing (6 days)", no: "Jobbskygging (6 dager)" },
       place: "Norwegian Air Shuttle",
-      text: "3 days in operations, 1 day with UI/UX and 2 days with the development department. Got an inside look at setting up and installing laptops, and got to fix a time synchronisation bug in the backend.",
+      text: { en: "Followed the development department and IT operations over two weeks: 3 days in operations, 1 day with UI/UX and 2 days with development. Got an inside look at setting up and installing laptops, and got to fix a time synchronisation bug in the backend.", no: "Fulgte utviklingsavdelingen og IT-drift over to uker: 3 dager i drift, 1 dag hos UI/UX og 2 dager med utvikling. Fikk innblikk i oppsett og installasjon av laptoper, og fikk fikse en tidssynkroniseringsfeil i backenden." },
+      // reference from Norwegian, quoted as written (phone number left out)
+      reference: {
+        from: "Thomas Klokkerhaug, Norwegian",
+        language: "Norwegian",
+        sections: [
+          { heading: "Referanse – jobbskygging", text: "Sander gjennomførte jobbskygging hos oss over en periode på to uker, hvor han fulgte både Digital Delivery (utviklingsavdelingen) og IT Operations." },
+          { heading: "", text: "I løpet av perioden viste Sander stor interesse for fagområdene, spesielt innen utvikling, samtidig som han var nysgjerrig på hvordan IT-drift fungerer i praksis. Han stilte relevante spørsmål, var engasjert i det han observerte, og viste god forståelse for sammenhengen mellom utvikling og drift." },
+          { heading: "", text: "Sander fremsto som en hyggelig, lærevillig og positiv elev, som raskt tilpasset seg nye miljøer og tok initiativ til å få mest mulig ut av oppholdet.\nVi opplever Sander som en motivert kandidat for videre utdanning og arbeid innen IT, og ønsker ham lykke til videre." },
+          { heading: "", text: "Med vennlig hilsen | Kind regards\nThomas Klokkerhaug\nDirector Digital Delivery & Business IT" },
+        ],
+      },
     },
     {
       period: "2024 — 2028",
-      title: "Information Technology and Media Production",
+      title: { en: "Information Technology and Media Production", no: "Informasjonsteknologi og medieproduksjon" },
       place: "Kuben VGS",
-      text: "Upper secondary school.",
+      text: { en: "Upper secondary school.", no: "Videregående skole." },
     },
     {
       period: "2020 — 2024",
-      title: "Lower secondary school",
+      title: { en: "Lower secondary school", no: "Ungdomsskole" },
       place: "Morellbakken ungdomsskole",
-      text: "With programming as an elective.",
+      text: { en: "With programming as an elective.", no: "Med programmering som valgfag." },
     },
   ],
   contact: {

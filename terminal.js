@@ -6,6 +6,8 @@
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   const HOST = C.handle;
+  const I18N = window.I18N;
+  const E = I18N.en; // the terminal and its files stay in English
 
   // output lines are { text, html } so pipes can work on plain text
   const T = (text, cls) => ({ text, html: cls ? `<span class="${cls}">${esc(text)}</span>` : esc(text) });
@@ -19,19 +21,19 @@
   const read = (node) => (typeof node.content === "function" ? node.content() : node.content);
 
   const projectFiles = Object.fromEntries(C.projects.map((p) => [`${p.name}.md`, file(
-    `# ${p.name}\n\n${p.description}\n\n${(p.details || []).join("\n\n")}\n\ntech: ${p.tech.join(", ")}` + (p.link ? `\nlink: ${p.link}` : ""),
+    `# ${p.name}\n\n${E(p.description)}\n\n${E(p.details || []).join("\n\n")}\n\ntech: ${p.tech.join(", ")}` + (p.link ? `\nlink: ${p.link}` : ""),
     { project: p.name },
   )]));
   const refFiles = Object.fromEntries(C.experience.filter((e) => e.reference).map((e) => [
     `${e.place.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.txt`,
-    file(`from: ${e.reference.from}\n\n` + e.reference.sections.map((s) => `## ${s.heading}\n${s.text}`).join("\n\n")),
+    file(`from: ${e.reference.from}\n\n` + e.reference.sections.map((s) => (s.heading ? `## ${s.heading}\n` : "") + s.text).join("\n\n")),
   ]));
 
   const home = dir({
-    "about.txt": file(C.about.join("\n\n")),
+    "about.txt": file(E(C.about).join("\n\n")),
     "skills.txt": file(Object.entries(C.skills).map(([g, i]) => `${g}: ${i.join(", ")}`).join("\n")),
     "contact.txt": file(Object.entries(C.contact).map(([k, v]) => `${k}: ${v}`).join("\n")),
-    "experience.log": file(C.experience.map((e) => `[${e.period}] ${e.title} @ ${e.place}\n  ${e.text}`).join("\n")),
+    "experience.log": file(C.experience.map((e) => `[${E(e.period)}] ${E(e.title)} @ ${e.place}\n  ${E(e.text)}`).join("\n")),
     projects: dir(projectFiles),
     references: dir(refFiles),
     album: dir({ "album.json": file("loading…"), photos: dir() }),
@@ -222,6 +224,7 @@
       H(`<span class="t-hl">search</span>       grep [-i -v -n -r -l -c] &lt;pattern&gt; [path]   find [path] -name &lt;pattern&gt;`),
       H(`<span class="t-hl">open</span>         photos   open &lt;photo|project&gt;   album`),
       H(`<span class="t-hl">shortcuts</span>    about   skills   projects   experience   contact`),
+      H(`<span class="t-hl">language</span>     lang [en|no|1337]`),
       H(`<span class="t-hl">system</span>       whoami   neofetch   banner   history   date   echo   clear   reboot   achievements`),
       H(`<span class="t-hl">packages</span>     pacman -Syu   pacman -S &lt;pkg&gt;   yay   <span class="t-dim">(arch, btw)</span>`),
       T(""),
@@ -430,9 +433,17 @@
     experience: () => commands.cat(["~/experience.log"]),
     contact: () => commands.cat(["~/contact.txt"]),
     projects: () => C.projects.flatMap((p) => [
-      H(`<a href="project.html?p=${encodeURIComponent(p.name)}" class="t-dir">${esc(p.name)}</a> — ${esc(p.description)}`, `${p.name} — ${p.description}`),
+      H(`<a href="project.html?p=${encodeURIComponent(p.name)}" class="t-dir">${esc(p.name)}</a> — ${esc(E(p.description))}`, `${p.name} — ${E(p.description)}`),
     ]),
 
+    lang: (args) => {
+      const names = { en: "English", no: "norsk", leet: "1337" };
+      if (!args[0]) return [T(`current: ${I18N.lang}`), T(`available: ${I18N.langs.join(", ")}  (usage: lang <code>)`, "t-dim"), T("the terminal itself stays in English.", "t-dim")];
+      const code = args[0].toLowerCase().replace(/^(nb|nn|norsk|norwegian)$/, "no").replace(/^(1337|l33t|leetspeak)$/, "leet").replace(/^english$/, "en");
+      if (!I18N.langs.includes(code)) return [err(`lang: unknown language '${args[0]}' — try: ${I18N.langs.join(", ")}`)];
+      I18N.set(code);
+      return [T(code === "leet" ? "l4n9u493 537 70 1337. h4ck 7h3 pl4n37." : `page language set to ${names[code]}.`, "t-ok")];
+    },
     whoami: () => [T("guest")],
     id: () => [T("uid=1001(guest) gid=1001(guest) groups=1001(guest),42(curious)")],
     hostname: () => [T(HOST)],
@@ -448,7 +459,7 @@
       T("-".repeat(HOST.length + 6)),
       ...[
         ["OS", "Arch Linux x86_64 (btw)"],
-        ["Host", `${C.name} // ${C.role}`],
+        ["Host", `${C.name} // ${E(C.role)}`],
         ["Kernel", "6.17.2-arch1-1-hexgrid"],
         ["Uptime", `${Math.round(performance.now() / 60000)} min`],
         ["Packages", "1337 (pacman), 42 (aur)"],

@@ -32,7 +32,7 @@
     el.innerHTML = `
       <div class="bs-inner">
         <pre class="bs-logo" style="--cols:${cols}">${lines.map((l) => `<span>${esc(l) || " "}</span>`).join("\n")}</pre>
-        <div class="bs-sub">${esc(C.name)} // ${esc(C.role)}</div>
+        <div class="bs-sub">${esc(C.name)} // ${esc(window.I18N ? window.I18N.L(C.role) : C.role)}</div>
         <pre class="bs-log"></pre>
         <div class="bs-hint">press any key to skip</div>
       </div>`;

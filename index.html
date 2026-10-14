@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;800&family=Orbitron:wght@600;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=202610141030" />
+  <link rel="stylesheet" href="style.css?v=202610141200" />
   <script>
     // hide the page until the boot screen takes over (first visit per session only)
     try { if (sessionStorage.getItem("snf-booted") !== "1" && !matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("booting"); } catch {}
@@ -20,17 +20,17 @@
 
   <header class="nav">
     <a href="#home" class="logo"><span class="accent">&lt;</span><span data-bind="handle"></span><span class="accent">/&gt;</span></a>
-    <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav">
+    <button class="nav-toggle" type="button" aria-label="Open menu" data-i18n-aria="nav.open" aria-expanded="false" aria-controls="site-nav">
       <span></span><span></span><span></span>
     </button>
     <nav id="site-nav">
-      <a href="#about"><span class="num">01.</span>about</a>
-      <a href="#skills"><span class="num">02.</span>skills</a>
-      <a href="#projects"><span class="num">03.</span>projects</a>
-      <a href="#experience"><span class="num">04.</span>experience</a>
-      <a href="#terminal"><span class="num">05.</span>terminal</a>
-      <a href="#contact"><span class="num">06.</span>contact</a>
-      <a href="album.html" class="nav-ext"><span class="num">07.</span>album</a>
+      <a href="#about"><span class="num">01.</span><span data-i18n="nav.about">about</span></a>
+      <a href="#skills"><span class="num">02.</span><span data-i18n="nav.skills">skills</span></a>
+      <a href="#projects"><span class="num">03.</span><span data-i18n="nav.projects">projects</span></a>
+      <a href="#experience"><span class="num">04.</span><span data-i18n="nav.experience">experience</span></a>
+      <a href="#terminal"><span class="num">05.</span><span data-i18n="nav.terminal">terminal</span></a>
+      <a href="#contact"><span class="num">06.</span><span data-i18n="nav.contact">contact</span></a>
+      <a href="album.html" class="nav-ext"><span class="num">07.</span><span data-i18n="nav.album">album</span></a>
     </nav>
   </header>
 
@@ -42,15 +42,15 @@
       <p class="role">&gt; <span data-bind="role"></span> @ <span data-bind="location"></span></p>
       <p class="typed"><span id="typed"></span><span class="caret">█</span></p>
       <div class="hero-cta">
-        <a href="#projects" class="btn">./view_projects</a>
-        <a href="#contact" class="btn ghost">./contact_me</a>
+        <a href="#projects" class="btn" data-i18n="hero.projects">./view_projects</a>
+        <a href="#contact" class="btn ghost" data-i18n="hero.contact">./contact_me</a>
       </div>
-      <div class="status"><span class="dot"></span> system online — available for work</div>
+      <div class="status"><span class="dot"></span> <span data-i18n="hero.status">system online — available for work</span></div>
     </section>
 
     <!-- ABOUT -->
     <section id="about" class="reveal">
-      <h2><span class="num">01.</span> about_me</h2>
+      <h2><span class="num">01.</span> <span data-i18n="h.about">about_me</span></h2>
       <div class="about-grid">
         <div class="code-card">
           <div class="win-bar"><i></i><i></i><i></i><span>about.ts</span></div>
@@ -65,25 +65,25 @@
 
     <!-- SKILLS -->
     <section id="skills" class="reveal">
-      <h2><span class="num">02.</span> tech_stack</h2>
+      <h2><span class="num">02.</span> <span data-i18n="h.skills">tech_stack</span></h2>
       <div class="skills-grid" id="skills-grid"></div>
     </section>
 
     <!-- PROJECTS -->
     <section id="projects" class="reveal">
-      <h2><span class="num">03.</span> projects</h2>
+      <h2><span class="num">03.</span> <span data-i18n="h.projects">projects</span></h2>
       <div class="projects-grid" id="projects-grid"></div>
     </section>
 
     <!-- EXPERIENCE -->
     <section id="experience" class="reveal">
-      <h2><span class="num">04.</span> experience.log</h2>
+      <h2><span class="num">04.</span> <span data-i18n="h.experience">experience.log</span></h2>
       <ol class="timeline" id="timeline"></ol>
     </section>
 
     <!-- TERMINAL -->
     <section id="terminal" class="reveal">
-      <h2><span class="num">05.</span> interactive_shell</h2>
+      <h2><span class="num">05.</span> <span data-i18n="h.terminal">interactive_shell</span></h2>
       <div class="term" id="term">
         <div class="win-bar"><i></i><i></i><i></i><span>guest@<span data-bind="handle"></span>: ~</span></div>
         <div class="term-body" id="term-body">
@@ -98,23 +98,24 @@
 
     <!-- CONTACT -->
     <section id="contact" class="reveal contact">
-      <h2><span class="num">06.</span> establish_connection</h2>
-      <p>My inbox is always open. Whether you have a question, a project or just want to say hi — ping me.</p>
-      <a class="btn big" id="email-btn" href="#">&gt; send_message()</a>
+      <h2><span class="num">06.</span> <span data-i18n="h.contact">establish_connection</span></h2>
+      <p data-i18n="contact.text">My inbox is always open. Whether you have a question, a project or just want to say hi — ping me.</p>
+      <a class="btn big" id="email-btn" href="#" data-i18n="contact.btn">&gt; send_message()</a>
       <div class="links" id="links"></div>
     </section>
   </main>
 
   <footer>
-    <p>&copy; <span id="year"></span> <span data-bind="name"></span> — built with &lt;3 on Arch Linux (btw)</p>
+    <p>&copy; <span id="year"></span> <span data-bind="name"></span> — <span data-i18n="footer">built with &lt;3 on Arch Linux (btw)</span></p>
   </footer>
 
-  <script src="config.js?v=202610141030"></script>
-  <script src="logo.js?v=202610141030"></script>
-  <script src="bootscreen.js?v=202610141030"></script>
-  <script src="main.js?v=202610141030"></script>
-  <script src="terminal.js?v=202610141030"></script>
-  <script src="hex.js?v=202610141030"></script>
-  <script src="nav.js?v=202610141030"></script>
+  <script src="config.js?v=202610141200"></script>
+  <script src="i18n.js?v=202610141200"></script>
+  <script src="logo.js?v=202610141200"></script>
+  <script src="bootscreen.js?v=202610141200"></script>
+  <script src="main.js?v=202610141200"></script>
+  <script src="terminal.js?v=202610141200"></script>
+  <script src="hex.js?v=202610141200"></script>
+  <script src="nav.js?v=202610141200"></script>
 </body>
 </html>
