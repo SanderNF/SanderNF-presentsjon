@@ -224,6 +224,7 @@
       H(`<span class="t-hl">search</span>       grep [-i -v -n -r -l -c] &lt;pattern&gt; [path]   find [path] -name &lt;pattern&gt;`),
       H(`<span class="t-hl">open</span>         photos   open &lt;photo|project&gt;   album`),
       H(`<span class="t-hl">shortcuts</span>    about   skills   projects   experience   contact`),
+      H(`<span class="t-hl">github</span>       gh stats   gh langs [--top N]`),
       H(`<span class="t-hl">language</span>     lang [en|no|1337]`),
       H(`<span class="t-hl">system</span>       whoami   neofetch   banner   history   date   echo   clear   reboot   achievements`),
       H(`<span class="t-hl">packages</span>     pacman -Syu   pacman -S &lt;pkg&gt;   yay   <span class="t-dim">(arch, btw)</span>`),
@@ -443,6 +444,54 @@
       if (!I18N.langs.includes(code)) return [err(`lang: unknown language '${args[0]}' — try: ${I18N.langs.join(", ")}`)];
       I18N.set(code);
       return [T(code === "leet" ? "l4n9u493 537 70 1337. h4ck 7h3 pl4n37." : `page language set to ${names[code]}.`, "t-ok")];
+    },
+    gh: async (args) => {
+      const api = window.SNF_GH;
+      const [sub, ...rest] = args;
+      const usage = [
+        T("usage: gh stats            github stats"),
+        T("       gh langs [--top N]  most used languages (N = 1–20)"),
+      ];
+      if (!sub || ["help", "-h", "--help"].includes(sub)) return usage;
+      if (!api) return [err("gh: github stats aren't set up on this site")];
+      const fail = (e) => [err(e?.kind === "cors"
+        ? "gh: can't read the stats server from here (it needs an Access-Control-Allow-Origin header, or you're offline)"
+        : "gh: the stats server returned an error. try again in a bit")];
+
+      if (sub === "stats") {
+        print([T(`fetching stats for ${api.username} …`, "t-dim")]);
+        let stats;
+        try { stats = await api.stats(); } catch (e) { return fail(e); }
+        const LABELS = { stars: "stars", commits: api.commitsAll ? "commits" : "commits (last year)", prs: "pull requests", issues: "issues", contribs: "contributed to (last year)" };
+        const ICONS = { stars: "★", commits: "⎇", prs: "⇄", issues: "◎", contribs: "⬡" };
+        const width = Math.max(...stats.map(([id]) => LABELS[id].length)) + 4;
+        return stats.map(([id, v]) => {
+          const dots = " " + ".".repeat(width - LABELS[id].length) + " ";
+          return H(`<span class="t-hl">${ICONS[id]}</span> ${esc(LABELS[id])}<span class="t-dim">${dots}</span><span class="t-ok">${esc(v)}</span>`, `${ICONS[id]} ${LABELS[id]}${dots}${v}`);
+        });
+      }
+
+      if (sub === "langs") {
+        let n;
+        const i = rest.findIndex((a) => a === "--top" || a === "-n");
+        if (i >= 0) n = rest[i + 1];
+        else n = rest.find((a) => a.startsWith("--top="))?.slice(6);
+        if (n !== undefined && !(/^\d+$/.test(n) && +n >= 1 && +n <= 20)) return [err("gh: --top needs a number from 1 to 20")];
+        print([T(`fetching languages for ${api.username} …`, "t-dim")]);
+        let langs;
+        try { langs = await api.langs(n === undefined ? undefined : +n); } catch (e) { return fail(e); }
+        const max = Math.max(...langs.map((l) => l.pct)), W = 20;
+        const nameW = Math.max(...langs.map((l) => l.name.length)) + 2;
+        return langs.map((l) => {
+          const filled = Math.max(l.pct > 0 ? 1 : 0, Math.round((l.pct / max) * W));
+          const pct = `${l.pct.toFixed(2)}%`.padStart(7);
+          return H(
+            `${esc(l.name.padEnd(nameW))}<span style="color:${api.visible(l.color)}">${"█".repeat(filled)}</span><span class="t-dim">${"░".repeat(W - filled)}</span> ${pct}`,
+            `${l.name.padEnd(nameW)}${"█".repeat(filled)}${"░".repeat(W - filled)} ${pct}`,
+          );
+        });
+      }
+      return [err(`gh: unknown command '${sub}'`), ...usage];
     },
     whoami: () => [T("guest")],
     id: () => [T("uid=1001(guest) gid=1001(guest) groups=1001(guest),42(curious)")],

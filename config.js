@@ -35,11 +35,14 @@ window.SITE_CONFIG = {
   },
   // GitHub stat cards from github-stats-extended, through your own endpoint.
   // Colours and language are added automatically to match the site. Set to null to hide the cards.
+  // Without an Access-Control-Allow-Origin header on the endpoint, plain <img> cards are shown instead.
   githubStats: {
     endpoint: "http://sandernf.xyz:8000/githubstats/api",
     username: "SanderNF",
+    // "native" = drawn in the site's style, "svg" = the original cards inlined (both need CORS on the endpoint)
+    display: "native",
     stats: { show_icons: "true", hide_rank: "true" },
-    topLangs: { langs_count: "8", hide: "css", layout: "compact" },
+    topLangs: { langs_count: "5", hide: "css", layout: "compact" },
   },
   // Each project gets its own page (project.html?p=<name>).
   // `link` is optional — leave it out for work that isn't public.
