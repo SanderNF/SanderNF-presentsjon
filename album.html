@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Photo Album</title>
+  <meta name="description" content="Photo album" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;800&family=Orbitron:wght@600;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css?v=202610140953" />
+</head>
+<body>
+  <canvas id="hexbg" aria-hidden="true"></canvas>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <header class="nav">
+    <a href="index.html" class="logo"><span class="accent">&lt;</span><span data-bind="handle"></span><span class="accent">/&gt;</span></a>
+    <nav>
+      <a href="index.html#about"><span class="num">01.</span>about</a>
+      <a href="index.html#skills"><span class="num">02.</span>skills</a>
+      <a href="index.html#projects"><span class="num">03.</span>projects</a>
+      <a href="index.html#experience"><span class="num">04.</span>experience</a>
+      <a href="index.html#terminal"><span class="num">05.</span>terminal</a>
+      <a href="index.html#contact"><span class="num">06.</span>contact</a>
+      <a href="album.html" class="active"><span class="num">07.</span>album</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="album-page">
+      <a href="index.html" class="back">&lt; cd ..</a>
+      <h2><span class="num">07.</span> <span id="album-title">photo_album</span></h2>
+      <p class="album-desc" id="album-desc"></p>
+      <div class="album-toolbar">
+        <div class="filters" id="filters" role="toolbar" aria-label="Filter by tag"></div>
+        <span class="count" id="count"></span>
+      </div>
+      <div class="gallery" id="gallery"></div>
+    </section>
+  </main>
+
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" hidden>
+    <button class="lb-btn lb-close" id="lb-close" aria-label="Close">✕</button>
+    <button class="lb-btn lb-prev" id="lb-prev" aria-label="Previous photo">‹</button>
+    <figure>
+      <div class="lb-view">
+        <div class="lb-stage" id="lb-stage">
+          <img id="lb-img" alt="" draggable="false" />
+        </div>
+        <div class="lb-zoom" role="toolbar" aria-label="Zoom">
+          <button id="zoom-out" aria-label="Zoom out">−</button>
+          <span id="zoom-level">100%</span>
+          <button id="zoom-in" aria-label="Zoom in">+</button>
+          <button id="zoom-reset" aria-label="Reset zoom">⟲</button>
+        </div>
+      </div>
+      <figcaption id="lb-meta"></figcaption>
+    </figure>
+    <div class="lens" id="lens" aria-hidden="true" hidden><span id="lens-level"></span></div>
+    <button class="lb-btn lb-next" id="lb-next" aria-label="Next photo">›</button>
+  </div>
+
+  <footer>
+    <p>&copy; <span id="year"></span> <span data-bind="name"></span></p>
+  </footer>
+
+  <script src="config.js?v=202610140953"></script>
+  <script src="album.js?v=202610140953"></script>
+  <script src="hex.js?v=202610140953"></script>
+</body>
+</html>

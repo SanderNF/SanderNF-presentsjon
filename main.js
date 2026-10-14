@@ -80,7 +80,7 @@
   const print = (html) => { out.insertAdjacentHTML("beforeend", `<div>${html}</div>`); body.scrollTop = body.scrollHeight; };
   const commands = {
     help: () => "available commands:\n" +
-      ["about", "skills", "projects", "experience", "contact", "whoami", "date", "clear", "sudo"]
+      ["about", "skills", "projects", "experience", "contact", "album", "whoami", "date", "clear", "sudo"]
         .map((c) => `  <span class="t-hl">${c}</span>`).join("\n"),
     about: () => C.about.map(esc).join("\n\n"),
     whoami: () => `${esc(C.name)} — ${esc(C.role)}`,
@@ -88,6 +88,7 @@
     projects: () => C.projects.map((p) => `<span class="t-hl">${esc(p.name)}</span> — ${esc(p.description)}\n  <a href="${esc(p.link)}" target="_blank" rel="noopener">${esc(p.link)}</a>`).join("\n"),
     experience: () => C.experience.map((e) => `[${esc(e.period)}] <span class="t-hl">${esc(e.title)}</span> @ ${esc(e.place)}`).join("\n"),
     contact: () => Object.entries(C.contact).map(([k, v]) => `${esc(k)}: <a href="${esc(k === "email" ? "mailto:" + v : v)}" target="_blank" rel="noopener">${esc(v)}</a>`).join("\n"),
+    album: () => { setTimeout(() => (location.href = "album.html"), 600); return `opening <a href="album.html">album.html</a> ...`; },
     date: () => new Date().toString(),
     sudo: () => `<span class="t-err">permission denied: nice try 😉</span>`,
     clear: () => { out.innerHTML = ""; return null; },
@@ -117,51 +118,4 @@
     entries.forEach((en) => en.isIntersecting && en.target.classList.add("visible")), { threshold: 0.12 });
   document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
 
-  // ---------- hexagon background ----------
-  const cv = $("#hexbg"), ctx = cv.getContext("2d");
-  const R = 30;                       // hex radius (px) — change for bigger/smaller cells
-  const W = R * 1.5, H = Math.sqrt(3) * R;
-  let hexes = [], mouse = { x: -1e4, y: -1e4 }, dpr = 1;
-  function resize() {
-    dpr = Math.min(devicePixelRatio || 1, 2);
-    cv.width = innerWidth * dpr; cv.height = innerHeight * dpr;
-    cv.style.width = innerWidth + "px"; cv.style.height = innerHeight + "px";
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    hexes = [];
-    for (let c = -1; c * W < innerWidth + R; c++)
-      for (let r = -1; r * H < innerHeight + H; r++)
-        hexes.push({ x: c * W, y: r * H + (c % 2 ? H / 2 : 0), glow: 0 });
-  }
-  function hexPath(x, y, rad) {
-    ctx.beginPath();
-    for (let i = 0; i < 6; i++) {
-      const a = (Math.PI / 3) * i;
-      ctx.lineTo(x + rad * Math.cos(a), y + rad * Math.sin(a));
-    }
-    ctx.closePath();
-  }
-  function draw() {
-    ctx.clearRect(0, 0, innerWidth, innerHeight);
-    for (const h of hexes) {
-      if (Math.random() < 0.0006) h.glow = 1;          // random pulse
-      const d = Math.hypot(h.x - mouse.x, h.y - mouse.y);
-      const near = Math.max(0, 1 - d / 220);           // cursor glow
-      const g = Math.max(h.glow, near);
-      hexPath(h.x, h.y, R - 2);
-      ctx.strokeStyle = `rgba(0, 255, 163, ${0.06 + g * 0.55})`;
-      ctx.lineWidth = 1;
-      ctx.stroke();
-      if (g > 0.05) {
-        ctx.fillStyle = `rgba(0, 212, 255, ${g * 0.08})`;
-        ctx.fill();
-      }
-      h.glow *= 0.97;
-    }
-    if (!reducedMotion) requestAnimationFrame(draw);
-  }
-  addEventListener("mousemove", (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
-  addEventListener("mouseleave", () => { mouse.x = mouse.y = -1e4; });
-  addEventListener("resize", resize);
-  resize();
-  draw();
 })();
