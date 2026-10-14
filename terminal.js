@@ -226,7 +226,7 @@
       H(`<span class="t-hl">shortcuts</span>    about   skills   projects   experience   contact`),
       H(`<span class="t-hl">github</span>       gh stats   gh langs [--top N]`),
       H(`<span class="t-hl">language</span>     lang [en|no|1337]`),
-      H(`<span class="t-hl">system</span>       whoami   neofetch   banner   history   date   echo   clear   reboot   achievements`),
+      H(`<span class="t-hl">system</span>       whoami   neofetch   hyfetch [-c]   fastfetch   banner   history   date   echo   clear   reboot   achievements`),
       H(`<span class="t-hl">packages</span>     pacman -Syu   pacman -S &lt;pkg&gt;   yay   <span class="t-dim">(arch, btw)</span>`),
       T(""),
       H(`tips: pipes work (<span class="t-cmd">ls -R | grep json</span>), tab completes, ↑/↓ for history.`),
@@ -502,25 +502,65 @@
       ? (hist = [], hIdx = 0, saveHist(), [])
       : hist.map((h, i) => T(`${String(i + 1).padStart(4)}  ${h}`)),
     banner: () => [logoLine()],
-    neofetch: () => [
-      logoLine(),
-      H(`<span class="t-hl">guest@${esc(HOST)}</span>`),
-      T("-".repeat(HOST.length + 6)),
-      ...[
-        ["OS", "Arch Linux x86_64 (btw)"],
-        ["Host", `${C.name} // ${E(C.role)}`],
-        ["Kernel", "6.17.2-arch1-1-hexgrid"],
-        ["Uptime", `${Math.round(performance.now() / 60000)} min`],
-        ["Packages", "1337 (pacman), 42 (aur)"],
-        ["Shell", "snf.sh"],
-        ["WM", "hyprland (obviously)"],
-        ["Resolution", `${screen.width}x${screen.height}`],
-        ["CPU", `${navigator.hardwareConcurrency || "?"} cores (yours, borrowed)`],
-        ["Memory", navigator.deviceMemory ? `${navigator.deviceMemory} GB-ish` : "enough"],
-        ["Languages", C.skills.languages?.join(", ") || "-"],
-      ].map(([k, v]) => H(`<span class="t-hl">${k}</span>: ${esc(v)}`)),
-      H(["#05070d", "#ff2bd6", "#00ffa3", "#febc2e", "#00d4ff", "#c9d6e8"].map((c) => `<span style="color:${c}">███</span>`).join("")),
-    ],
+    neofetch: () => fetchInfo(false),
+    fastfetch: () => fetchInfo(false),
+    hyfetch: (args) => {
+      const F = window.SNF_FLAG;
+      if (!F) return fetchInfo(true);
+      const names = Object.keys(F.presets);
+      const apply = (name) => {
+        F.set(name);
+        return [T(`hyfetch: preset set to '${name}' and saved in this browser (the name heading changed too)`, "t-ok"), ...fetchInfo(true)];
+      };
+      if (args.includes("-h") || args.includes("--help")) return [
+        T("usage: hyfetch               neofetch in your flag colours"),
+        T("       hyfetch -c            choose a preset: type to search, tab to complete"),
+        T("       hyfetch -p <preset>   use a preset directly (tab completes)"),
+        T("       hyfetch --reset       forget the saved preset"),
+        T(`presets: ${names.join(", ")}  ·  saved only in this browser`, "t-dim"),
+      ];
+      if (args.includes("--reset") || args.includes("-r")) {
+        const now = F.reset();
+        return [T(`hyfetch: saved preset forgotten. now using '${now}'`, "t-ok")];
+      }
+      const pi = args.findIndex((a) => a === "-p" || a === "--preset");
+      if (pi >= 0) {
+        const r = pickPreset(args[pi + 1] || "");
+        if (r.name) return apply(r.name);
+        return [err(r.matches.length
+          ? `hyfetch: '${args[pi + 1]}' matches ${r.matches.length} presets: ${r.matches.join(", ")}`
+          : `hyfetch: unknown preset '${args[pi + 1] || ""}'. presets: ${names.join(", ")}`)];
+      }
+      if (args.includes("-c") || args.includes("--config")) {
+        // swatches padded to the widest flag, so the names line up
+        const widest = Math.max(...names.map((n) => F.presets[n].colors.length));
+        const swatch = (cols) => cols.map((c) => `<span style="color:${liftDark(c)}">██</span>`).join("") + "  ".repeat(widest - cols.length);
+        const tag = (n) => (n !== F.current ? "" : F.source === "saved" ? " (current, saved)" : F.source === "link" ? " (current, from link)" : " (current, default)");
+        // the list redraws as you type, showing only presets that match (numbers stay the same)
+        const rows = (q) => {
+          // a number shows the presets whose number starts with it (2 → 2, 20–28)
+          const shown = names.map((n, i) => [n, i]).filter(([n, i]) => !q || (/^\d+$/.test(q) ? String(i + 1).startsWith(q) : searchPresets(q).includes(n)));
+          if (!shown.length) return `<span class="t-dim">  no presets match '${esc(q)}'</span>`;
+          return shown.map(([n, i]) => `  ${String(i + 1).padStart(2)}) ${swatch(F.presets[n].colors)}  ${esc(n)} <span class="t-dim">— ${esc(F.presets[n].label)}${tag(n)}</span>`).join("\n");
+        };
+        const listId = "hy-list-" + Date.now();
+        const answer = (raw) => {
+          const r = pickPreset(raw);
+          if (r.name) return apply(r.name);
+          if (r.matches.length) return { again: true, lines: [T(`${r.matches.length} presets match '${raw}': ${r.matches.join(", ")}. type more, or press tab`, "t-dim")] };
+          return { again: true, lines: [err(`no preset matches '${raw}'. try again, or press enter on an empty line to cancel`)] };
+        };
+        ask(`choose a preset (type to search, tab to complete):`, answer, {
+          onInput: (q) => { const el = document.getElementById(listId); if (el) el.innerHTML = rows(q.trim().toLowerCase()); },
+          complete: (q) => completePreset(q),
+        });
+        return [
+          T("hyfetch: pick the flag for this site (name heading + hyfetch). it's saved only in this browser"),
+          H(`<div id="${listId}" class="hy-list">${rows("")}</div>`, names.join(" ")),
+        ];
+      }
+      return fetchInfo(true);
+    },
     achievements: (args) => args.includes("--reset") ? (found.clear(), save(), syncAchievementFiles(), [T("achievements reset. the hunt begins again.", "t-dim")]) : [
       T(`${found.size}/${TOTAL} found`, "t-hl"),
       ...Object.keys(EGGS).map((e) => found.has(e) ? H(`  <span class="t-ach">★ ${esc(e)}</span> <span class="t-dim">— ${esc(EGGS[e])}</span>`, e) : T("  ☆ ???", "t-dim")),
@@ -711,10 +751,80 @@
   const promptText = () => `guest@${HOST}:${show(cwd)}$`;
   const updatePrompt = () => (promptEl.textContent = promptText());
 
-  function logoLine() {
+  function logoLine(extraClass = "", background = "") {
     const ls = window.SNF_LOGO.split("\n");
     const cols = Math.max(...ls.map((l) => l.length));
-    return H(`<pre class="t-logo" style="--cols:${cols}">${esc(window.SNF_LOGO)}</pre>`, "");
+    return H(`<pre class="t-logo ${extraClass}" style="--cols:${cols}${background ? `;background:${background};-webkit-background-clip:text;background-clip:text` : ""}">${esc(window.SNF_LOGO)}</pre>`, "");
+  }
+
+  // ---------- hyfetch preset search ----------
+  // a preset matches if its name, label or one of its shortcuts contains the text
+  function searchPresets(q) {
+    const F = window.SNF_FLAG;
+    q = String(q).trim().toLowerCase();
+    if (!F || !q) return F ? Object.keys(F.presets) : [];
+    return Object.keys(F.presets).filter((n) =>
+      n.includes(q) || F.presets[n].label.toLowerCase().includes(q) ||
+      Object.entries(F.aliases).some(([alias, target]) => target === n && alias.includes(q)));
+  }
+  // what the typed text means: a number, an exact name/shortcut, or the only search match
+  function pickPreset(raw) {
+    const F = window.SNF_FLAG, names = Object.keys(F.presets), q = String(raw).trim().toLowerCase();
+    if (/^\d+$/.test(q)) return { name: names[+q - 1] || null, matches: [] }; // list number
+    const exact = F.resolve(q);
+    if (exact) return { name: exact, matches: [exact] };
+    const matches = searchPresets(q);
+    return { name: matches.length === 1 ? matches[0] : null, matches };
+  }
+  // tab: complete to the one match, or to the longest shared start of the names that start with it
+  function completePreset(q) {
+    const F = window.SNF_FLAG, names = Object.keys(F.presets), t = q.trim().toLowerCase();
+    if (/^\d+$/.test(t)) return names[+t - 1] ? { value: names[+t - 1], options: [names[+t - 1]] } : { value: q, options: [] };
+    let opts = names.filter((n) => n.startsWith(t));
+    if (!opts.length) opts = searchPresets(t);
+    if (!opts.length) return { value: q, options: [] };
+    if (opts.length === 1) return { value: opts[0], options: opts };
+    let common = opts[0];
+    for (const o of opts) while (!o.startsWith(common)) common = common.slice(0, -1);
+    return { value: common.length > t.length ? common : q, options: opts };
+  }
+
+  // neofetch / fastfetch, and hyfetch: the same info in the current flag preset's colours
+  // very dark flag colours (black, navy) get lifted so they show on the dark terminal
+  function liftDark(hex) {
+    const m = /^#([\da-f]{2})([\da-f]{2})([\da-f]{2})$/i.exec(hex);
+    if (!m) return hex;
+    const [r, g, b] = m.slice(1).map((x) => parseInt(x, 16) / 255);
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b < 0.12 ? `color-mix(in srgb, ${hex} 55%, #c9d6e8)` : hex;
+  }
+  function fetchInfo(nb) {
+    const preset = window.SNF_FLAG?.current || "classic";
+    const NB = (window.SNF_FLAG?.presets[preset]?.colors || ["#fcf434", "#ffffff", "#9c59d1", "#2c2c2c"]).map(liftDark);
+    const light = NB.filter((c) => !c.startsWith("color-mix"));   // label colours: skip the very dark ones
+    const key = (k, i) => (nb ? `<span style="color:${light[i % light.length]}">${k}</span>` : `<span class="t-hl">${k}</span>`);
+    const info = [
+      ["OS", "Arch Linux x86_64 (btw)"],
+      ["Host", `${C.name} // ${E(C.role)}`],
+      ["Kernel", "6.17.2-arch1-1-hexgrid"],
+      ["Uptime", `${Math.round(performance.now() / 60000)} min`],
+      ["Packages", "1337 (pacman), 42 (aur)"],
+      ["Shell", "snf.sh"],
+      ["WM", "hyprland (obviously)"],
+      ["Resolution", `${screen.width}x${screen.height}`],
+      ["CPU", `${navigator.hardwareConcurrency || "?"} cores (yours, borrowed)`],
+      ["Memory", navigator.deviceMemory ? `${navigator.deviceMemory} GB-ish` : "enough"],
+      ["Languages", C.skills.languages?.join(", ") || "-"],
+    ];
+    const swatches = nb ? NB : ["#05070d", "#ff2bd6", "#00ffa3", "#febc2e", "#00d4ff", "#c9d6e8"];
+    const stripes = `linear-gradient(to bottom, ${NB.map((c, i) => `${c} ${(i / NB.length * 100).toFixed(1)}% ${((i + 1) / NB.length * 100).toFixed(1)}%`).join(", ")})`;
+    return [
+      ...(nb ? [T(`hyfetch: using preset '${preset}'  (change it with: hyfetch -c)`, "t-dim")] : []),
+      logoLine(nb ? "nb" : "", nb ? stripes : ""),
+      H(nb ? `<span style="color:${light[0]}">guest</span>@<span style="color:${light.at(-1)}">${esc(HOST)}</span>` : `<span class="t-hl">guest@${esc(HOST)}</span>`, `guest@${HOST}`),
+      T("-".repeat(HOST.length + 6)),
+      ...info.map(([k, v], i) => H(`${key(k, i)}: ${esc(v)}`, `${k}: ${v}`)),
+      H(swatches.map((c) => `<span style="color:${c}">███</span>`).join(""), ""),
+    ];
   }
 
   async function runPipeline(segment) {
@@ -741,11 +851,47 @@
     return result;
   }
 
+  // one-shot question (e.g. `hyfetch -c`): the next line typed answers it instead of running as a command
+  // opts.onInput(text) runs as you type, opts.complete(text) handles tab. An answer can return
+  // { again: true, lines } to print something and keep asking the same question.
+  let pendingAsk = null, askOpts = {};
+  function ask(question, answer, opts = {}) {
+    pendingAsk = answer;
+    askOpts = opts;
+    promptEl.textContent = question;
+  }
+  function cancelAsk() {
+    if (!pendingAsk) return false;
+    pendingAsk = null;
+    askOpts.onInput?.("");
+    askOpts = {};
+    updatePrompt();
+    return true;
+  }
+
   $("#term-form").addEventListener("submit", async (e) => {
     e.preventDefault();
     if (busy) return;
     const raw = input.value.trim();
     input.value = "";
+    if (pendingAsk) {
+      const answer = pendingAsk, opts = askOpts, question = promptEl.textContent;
+      print([H(`<span class="prompt">${esc(question)}</span> <span class="t-cmd">${esc(raw)}</span>`, "")]);
+      if (!raw) { cancelAsk(); print([T("cancelled.", "t-dim")]); return; }
+      pendingAsk = null; askOpts = {};
+      const res = await answer(raw);
+      if (res?.again) {
+        print(res.lines);
+        ask(question, answer, opts);
+        opts.onInput?.(raw);   // keep the list filtered to what they typed
+      } else {
+        updatePrompt();
+        opts.onInput?.("");
+        print(res);
+      }
+      print(pendingAch.splice(0));
+      return;
+    }
     print([H(`<span class="prompt">${esc(promptText())}</span> <span class="t-cmd">${esc(raw)}</span>`, "")]);
     if (!raw) return;
     if (hist.at(-1) !== raw) hist.push(raw);   // skip consecutive duplicates, like bash's ignoredups
@@ -759,11 +905,19 @@
     print(pendingAch.splice(0));
   });
 
+  input.addEventListener("input", () => { if (pendingAsk) askOpts.onInput?.(input.value); });
   input.addEventListener("keydown", (e) => {
     if (e.key === "ArrowUp" && hIdx > 0) { input.value = hist[--hIdx]; e.preventDefault(); }
     else if (e.key === "ArrowDown") { hIdx = Math.min(hIdx + 1, hist.length); input.value = hist[hIdx] || ""; e.preventDefault(); }
+    else if (e.key === "Tab" && pendingAsk) {
+      e.preventDefault();
+      if (askOpts.complete) { input.value = askOpts.complete(input.value).value; askOpts.onInput?.(input.value); }
+    }
     else if (e.key === "Tab") { e.preventDefault(); complete(); }
     else if (e.key === "l" && e.ctrlKey) { e.preventDefault(); out.innerHTML = ""; }
+    else if (e.key === "c" && e.ctrlKey && !getSelection().toString() && cancelAsk()) {
+      print([T("^C cancelled.", "t-dim")]); input.value = "";
+    }
     else if (e.key === "c" && e.ctrlKey && !getSelection().toString()) {
       print([H(`<span class="prompt">${esc(promptText())}</span> ${esc(input.value)}^C`, "")]); input.value = "";
     }
@@ -776,6 +930,8 @@
     let options, base = "";
     if (i < 0 || /\|\s*$/.test(before)) {
       options = Object.keys(commands).filter((c) => c.startsWith(word));
+    } else if (/(^|\|\s*)hyfetch\b.*\s(-p|--preset)\s+$/.test(before) && window.SNF_FLAG) {
+      options = completePreset(word).options;
     } else {
       const j = word.lastIndexOf("/");
       base = j >= 0 ? word.slice(0, j + 1) : "";
@@ -789,7 +945,7 @@
     if (options.length === 1) { input.value = before + base + options[0] + (options[0].endsWith("/") ? "" : " "); return; }
     let common = options[0];
     for (const o of options) while (!o.startsWith(common)) common = common.slice(0, -1);
-    input.value = before + base + common;
+    if (!(base + common).startsWith(word)) common = word.slice(base.length); // search matches: keep what was typed
     print([H(`<span class="prompt">${esc(promptText())}</span> ${esc(v)}`, ""), T(options.join("  "), "t-dim")]);
   }
 

@@ -8,6 +8,10 @@
   --accent: #00ffa3;   /* neon green */
   --accent-2: #00d4ff; /* cyan */
   --accent-3: #ff2bd6; /* magenta */
+  --nb-yellow: #fcf434;  /* non-binary flag: name heading + hyfetch */
+  --nb-white: #ffffff;
+  --nb-purple: #9c59d1;
+  --nb-black: #2c2c2c;
   --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
   --display: "Orbitron", var(--mono);
 }
@@ -141,20 +145,43 @@ h2::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg
   position: relative;
   font-family: var(--display);
   font-size: clamp(2.6rem, 9vw, 6rem);
-  line-height: 1.05; color: #fff;
-  text-shadow: 0 0 24px rgba(0, 255, 163, 0.35);
+  line-height: 1.05;
+  filter: drop-shadow(0 0 18px rgba(156, 89, 209, 0.35));
 }
+/* flag stripes clipped to each letter. main.js sets each letter's gradient so the stripes are spread
+   evenly over that letter's own height (short letters get every stripe too). Preset: `hyfetch -c` */
+.glitch span {
+  display: inline-block; white-space: pre;
+  color: transparent;
+  -webkit-background-clip: text; background-clip: text;
+  /* light outline so the black stripe reads as black letters, not a gap in the dark page */
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.45);
+}
+/* "classic" preset: the original white heading with pink and teal glitch copies always showing */
+.glitch.classic { filter: none; text-shadow: 0 0 24px rgba(0, 255, 163, 0.35); }
+.glitch.classic span { color: #fff; background: none; -webkit-text-stroke: 0; }
+.glitch.classic::before, .glitch.classic::after { opacity: 0.8; animation-name: glitch-classic; }
+
 .glitch::before, .glitch::after {
-  content: attr(data-text); position: absolute; inset: 0; opacity: 0.8;
+  content: attr(data-text); position: absolute; inset: 0; opacity: 0;
 }
-.glitch::before { color: var(--accent-3); animation: glitch 3s infinite linear alternate-reverse; clip-path: inset(0 0 60% 0); }
-.glitch::after  { color: var(--accent-2); animation: glitch 2.4s infinite linear alternate; clip-path: inset(55% 0 0 0); }
+.glitch::before { color: var(--glitch-a, var(--nb-yellow)); animation: glitch 3s infinite linear alternate-reverse; clip-path: inset(0 0 60% 0); }
+.glitch::after  { color: var(--glitch-b, var(--nb-purple)); animation: glitch 2.4s infinite linear alternate; clip-path: inset(55% 0 0 0); }
 @keyframes glitch {
+  /* the coloured copies only show up while the text jumps */
+  0%, 88%, 100% { transform: translate(0); opacity: 0; }
+  90% { transform: translate(-3px, 1px); opacity: 0.85; }
+  93% { transform: translate(3px, -1px); opacity: 0.85; }
+  96% { transform: translate(-2px, 0); opacity: 0.85; }
+}
+@keyframes glitch-classic {
   0%, 88%, 100% { transform: translate(0); }
   90% { transform: translate(-3px, 1px); }
   93% { transform: translate(3px, -1px); }
   96% { transform: translate(-2px, 0); }
 }
+
+
 .role { color: var(--accent-2); font-size: clamp(1rem, 2.2vw, 1.3rem); margin-top: 14px; }
 .typed { font-size: clamp(1rem, 2.4vw, 1.4rem); color: var(--text); margin-top: 10px; min-height: 1.7em; }
 .caret { color: var(--accent); animation: blink 1s steps(1) infinite; margin-left: 2px; }
@@ -380,6 +407,12 @@ mark.t-match { background: var(--accent); color: var(--bg); border-radius: 2px; 
   filter: drop-shadow(0 0 6px rgba(0, 255, 163, 0.35));
 }
 #term-out { container-type: inline-size; }
+/* hyfetch: the logo striped in the non-binary flag (black lifted a bit so it shows on the dark terminal) */
+.t-logo.nb {
+  background: linear-gradient(to bottom, var(--nb-yellow) 0 25%, var(--nb-white) 25% 50%, var(--nb-purple) 50% 75%, #4a4a4a 75% 100%);
+  -webkit-background-clip: text; background-clip: text;
+  filter: drop-shadow(0 0 5px rgba(156, 89, 209, 0.4));
+}
 
 /* ---------- boot screen ---------- */
 html.booting body > *:not(.bootscreen) { visibility: hidden; }

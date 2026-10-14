@@ -51,6 +51,8 @@ These have funny responses but don't count towards the 13:
 - **Arch, btw:**
   - `btw`
   - `neofetch`
+  - `fastfetch` (alias for `neofetch`)
+  - `hyfetch` — neofetch in flag colours; `hyfetch -c` picks a preset (nonbinary, norway, rainbow, classic) that also recolours the name heading
   - `uname -a`
   - `cat /etc/os-release`
   - `pacman -S <pkg>`
