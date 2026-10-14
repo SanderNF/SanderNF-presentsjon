@@ -57,7 +57,7 @@
   $("#projects-grid").innerHTML = C.projects
     .map((p) => `
       <article class="project">
-        <div class="top"><span>&lt;/&gt;</span><a href="${esc(p.link)}" target="_blank" rel="noopener" aria-label="Open ${esc(p.name)}">↗</a></div>
+        <div class="top"><span>&lt;/&gt;</span>${p.link ? `<a href="${esc(p.link)}" target="_blank" rel="noopener" aria-label="Open ${esc(p.name)}">↗</a>` : ""}</div>
         <h3>${esc(p.name)}</h3>
         <p>${esc(p.description)}</p>
         <div class="tags">${p.tech.map((t) => `<span>${esc(t)}</span>`).join("")}</div>
@@ -65,8 +65,14 @@
     .join("");
 
   // ---------- experience ----------
+  // optional reference letter, shown as an expandable box
+  const reference = (r) => !r ? "" : `
+    <details class="reference">
+      <summary>./reference --from "${esc(r.from)}"${r.language ? ` <span class="ref-lang">[${esc(r.language)}]</span>` : ""}</summary>
+      <div class="ref-body">${r.sections.map((s) => `<h4>${esc(s.heading)}</h4>${s.text.split("\n").map((t) => `<p>${esc(t)}</p>`).join("")}`).join("")}</div>
+    </details>`;
   $("#timeline").innerHTML = C.experience
-    .map((e) => `<li><div class="period">[${esc(e.period)}]</div><h3>${esc(e.title)}</h3><div class="place">@ ${esc(e.place)}</div><p>${esc(e.text)}</p></li>`)
+    .map((e) => `<li><div class="period">[${esc(e.period)}]</div><h3>${esc(e.title)}</h3><div class="place">@ ${esc(e.place)}</div><p>${esc(e.text)}</p>${reference(e.reference)}</li>`)
     .join("");
 
   // ---------- contact ----------
@@ -85,7 +91,7 @@
     about: () => C.about.map(esc).join("\n\n"),
     whoami: () => `${esc(C.name)} — ${esc(C.role)}`,
     skills: () => Object.entries(C.skills).map(([g, i]) => `<span class="t-hl">${esc(g)}</span>: ${i.map(esc).join(", ")}`).join("\n"),
-    projects: () => C.projects.map((p) => `<span class="t-hl">${esc(p.name)}</span> — ${esc(p.description)}\n  <a href="${esc(p.link)}" target="_blank" rel="noopener">${esc(p.link)}</a>`).join("\n"),
+    projects: () => C.projects.map((p) => `<span class="t-hl">${esc(p.name)}</span> — ${esc(p.description)}${p.link ? `\n  <a href="${esc(p.link)}" target="_blank" rel="noopener">${esc(p.link)}</a>` : ""}`).join("\n"),
     experience: () => C.experience.map((e) => `[${esc(e.period)}] <span class="t-hl">${esc(e.title)}</span> @ ${esc(e.place)}`).join("\n"),
     contact: () => Object.entries(C.contact).map(([k, v]) => `${esc(k)}: <a href="${esc(k === "email" ? "mailto:" + v : v)}" target="_blank" rel="noopener">${esc(v)}</a>`).join("\n"),
     album: () => { setTimeout(() => (location.href = "album.html"), 600); return `opening <a href="album.html">album.html</a> ...`; },

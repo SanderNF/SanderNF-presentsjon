@@ -16,7 +16,10 @@
 
   <header class="nav">
     <a href="#home" class="logo"><span class="accent">&lt;</span><span data-bind="handle"></span><span class="accent">/&gt;</span></a>
-    <nav>
+    <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="site-nav">
       <a href="#about"><span class="num">01.</span>about</a>
       <a href="#skills"><span class="num">02.</span>skills</a>
       <a href="#projects"><span class="num">03.</span>projects</a>
@@ -105,5 +108,6 @@
   <script src="config.js?v=202610140953"></script>
   <script src="main.js?v=202610140953"></script>
   <script src="hex.js?v=202610140953"></script>
+  <script src="nav.js?v=202610140953"></script>
 </body>
 </html>
