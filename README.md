@@ -63,7 +63,7 @@ The site needs to be served over HTTP (the album, project files and stats load d
 A small Rust server in `server/`: compression (Brotli/gzip), cache headers, 304 revalidation, byte ranges for the photos, and dotfiles and the `server/` folder are never served.
 
 ```sh
-cargo build --release --manifest-path server/Cargo.toml   # once; needs Rust (rustup.rs)
+cargo build --release --locked --manifest-path server/Cargo.toml   # once; needs Rust 1.75+
 ./server/target/release/snf-server --root . --port 8000
 ```
 

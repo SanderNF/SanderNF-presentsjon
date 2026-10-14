@@ -2,6 +2,10 @@
 name = "snf-server"
 version = "0.1.0"
 edition = "2021"
+# oldest Rust this builds with (e.g. Debian 12's packaged cargo). Cargo.lock pins dependency
+# versions that support it, so build with --locked. Re-lock with:
+#   CARGO_RESOLVER_INCOMPATIBLE_RUST_VERSIONS=fallback cargo update
+rust-version = "1.75"
 description = "Small, fast static file server for the portfolio site"
 publish = false
 

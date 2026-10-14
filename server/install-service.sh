@@ -64,6 +64,8 @@ UNIT_PATH="/etc/systemd/system/$NAME.service"
 BIN_PATH="/usr/local/bin/$NAME"
 BUILT_BIN="$SCRIPT_DIR/target/release/snf-server"
 MANIFEST="$SCRIPT_DIR/Cargo.toml"
+# --locked builds the exact dependency versions in Cargo.lock, which support Rust 1.75+
+BUILD_HELP="build failed. snf-server needs Rust 1.75 or newer (check: cargo --version). Update with rustup (https://rustup.rs), or your distro's rust/cargo packages"
 
 # the person behind this run: the sudo caller if there is one, otherwise whoever is running it
 CALLER="${SUDO_USER:-$(id -un)}"
@@ -146,7 +148,7 @@ fi
 if (( EUID != 0 )); then
   command -v cargo >/dev/null || die "cargo not found. install Rust from https://rustup.rs first"
   echo "building release binary…"
-  cargo build --release --manifest-path "$MANIFEST"
+  cargo build --release --locked --manifest-path "$MANIFEST" || die "$BUILD_HELP"
   command -v sudo >/dev/null || die "sudo not found. run this script as root instead"
   exec sudo "$0" --built --port "$PORT" --host "$HOST" --root "$ROOT" --user "$SERVICE_USER" --name "$NAME"
 fi
@@ -157,11 +159,11 @@ if (( ! BUILT_BY_CALLER )); then
   if [[ -n "$CALLER" ]] && id "$CALLER" &>/dev/null; then
     # sudo ./install-service.sh: build as the real user with their own Rust toolchain (login shell for ~/.cargo/bin)
     echo "building release binary as $CALLER…"
-    runuser -u "$CALLER" -- bash -lc "cargo build --release --manifest-path $(printf %q "$MANIFEST")" \
-      || die "build failed (is Rust installed for $CALLER? https://rustup.rs)"
+    runuser -u "$CALLER" -- bash -lc "cargo build --release --locked --manifest-path $(printf %q "$MANIFEST")" \
+      || die "$BUILD_HELP"
   elif command -v cargo >/dev/null || [[ -x /root/.cargo/bin/cargo ]]; then
     echo "building release binary as root…"
-    "$(command -v cargo || echo /root/.cargo/bin/cargo)" build --release --manifest-path "$MANIFEST" || die "build failed"
+    "$(command -v cargo || echo /root/.cargo/bin/cargo)" build --release --locked --manifest-path "$MANIFEST" || die "$BUILD_HELP"
   elif [[ -x "$BUILT_BIN" ]]; then
     echo "note: cargo not found, installing the binary that's already built at $BUILT_BIN"
   else
