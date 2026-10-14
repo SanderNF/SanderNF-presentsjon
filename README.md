@@ -57,8 +57,27 @@ Only `file` is required — empty fields and `"unknown"` values are simply hidde
 > The album loads JSON, so it needs to be served over HTTP (see below) — opening `album.html` directly from disk won't work.
 
 ## Run locally
-Open `index.html` in a browser, or serve it:
+The site needs to be served over HTTP (the album, project files and stats load data with `fetch`).
 
+### snf-server (recommended)
+A small Rust server in `server/`: compression (Brotli/gzip), cache headers, 304 revalidation, byte ranges for the photos, and dotfiles and the `server/` folder are never served.
+
+```sh
+cargo build --release --manifest-path server/Cargo.toml   # once; needs Rust (rustup.rs)
+./server/target/release/snf-server --root . --port 8000
+```
+
+Options: `--root DIR` (folder to serve, default `.`), `--host ADDR` (default `0.0.0.0`), `--port N` (default `8000`), `--quiet` (no request log). The binary is self-contained, so you can copy `server/target/release/snf-server` to another machine of the same OS/CPU type and run it there.
+
+### Run on boot (Linux, systemd)
+```sh
+./server/install-service.sh --port 8000          # builds, installs and starts it; starts on every boot
+./server/install-service.sh --dry-run            # just print the systemd unit it would install
+./server/install-service.sh --uninstall          # remove it again
+```
+Run it as your normal user (it asks for `sudo` when needed). The service runs as you, read-only, with systemd hardening. Logs: `journalctl -u snf-server -f`. Run the script again after updating the code to rebuild and restart.
+
+### Quick alternative
 ```sh
 python3 -m http.server 8000
 ```

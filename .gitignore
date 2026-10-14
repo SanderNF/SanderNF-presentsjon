@@ -402,3 +402,6 @@ FodyWeavers.xsd
 
 # macOS
 .DS_Store
+
+# Rust build output for the web server
+server/target/
