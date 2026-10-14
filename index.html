@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sander NF — Developer</title>
+  <meta name="description" content="Personal portfolio" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;800&family=Orbitron:wght@600;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <canvas id="hexbg" aria-hidden="true"></canvas>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <header class="nav">
+    <a href="#home" class="logo"><span class="accent">&lt;</span><span data-bind="handle"></span><span class="accent">/&gt;</span></a>
+    <nav>
+      <a href="#about"><span class="num">01.</span>about</a>
+      <a href="#skills"><span class="num">02.</span>skills</a>
+      <a href="#projects"><span class="num">03.</span>projects</a>
+      <a href="#experience"><span class="num">04.</span>experience</a>
+      <a href="#terminal"><span class="num">05.</span>terminal</a>
+      <a href="#contact"><span class="num">06.</span>contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section id="home" class="hero">
+      <p class="boot" id="boot"></p>
+      <h1 class="glitch" data-bind="name"></h1>
+      <p class="role">&gt; <span data-bind="role"></span> @ <span data-bind="location"></span></p>
+      <p class="typed"><span id="typed"></span><span class="caret">█</span></p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn">./view_projects</a>
+        <a href="#contact" class="btn ghost">./contact_me</a>
+      </div>
+      <div class="status"><span class="dot"></span> system online — available for work</div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="reveal">
+      <h2><span class="num">01.</span> about_me</h2>
+      <div class="about-grid">
+        <div class="code-card">
+          <div class="win-bar"><i></i><i></i><i></i><span>about.ts</span></div>
+          <pre id="about-code"></pre>
+        </div>
+        <div>
+          <div id="about-text"></div>
+          <div class="stats" id="stats"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" class="reveal">
+      <h2><span class="num">02.</span> tech_stack</h2>
+      <div class="skills-grid" id="skills-grid"></div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="reveal">
+      <h2><span class="num">03.</span> projects</h2>
+      <div class="projects-grid" id="projects-grid"></div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience" class="reveal">
+      <h2><span class="num">04.</span> experience.log</h2>
+      <ol class="timeline" id="timeline"></ol>
+    </section>
+
+    <!-- TERMINAL -->
+    <section id="terminal" class="reveal">
+      <h2><span class="num">05.</span> interactive_shell</h2>
+      <div class="term" id="term">
+        <div class="win-bar"><i></i><i></i><i></i><span>guest@<span data-bind="handle"></span>: ~</span></div>
+        <div class="term-body" id="term-body">
+          <div id="term-out"></div>
+          <form id="term-form" class="term-line">
+            <label for="term-input" class="prompt">guest@<span data-bind="handle"></span>:~$</label>
+            <input id="term-input" autocomplete="off" spellcheck="false" />
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="reveal contact">
+      <h2><span class="num">06.</span> establish_connection</h2>
+      <p>My inbox is always open. Whether you have a question, a project or just want to say hi — ping me.</p>
+      <a class="btn big" id="email-btn" href="#">&gt; send_message()</a>
+      <div class="links" id="links"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; <span id="year"></span> <span data-bind="name"></span> — built with &lt;3 and too much caffeine</p>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
