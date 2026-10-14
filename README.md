@@ -7,6 +7,14 @@ Edit **`config.js`** — name, taglines, about text, skills, projects, experienc
 
 Colors are CSS variables at the top of `style.css` (`--accent`, `--accent-2`, `--accent-3`).
 
+## Projects
+Each project in `config.js` gets its own page at `project.html?p=<name>`, with a `README.md` tab built from `description` + `details`. Set `report` to an experience `place` (e.g. `"Spenn"`) to add a `report.txt` tab showing that entry's reference letter.
+
+## Terminal
+The terminal on the home page (`terminal.js`) has a small fake filesystem built from `config.js` and `album/album.json`: `ls`, `cd`, `cat`, `grep`, `find`, `tree`, pipes, tab completion, and photo search (`grep -i sigma -r album`). There are a few easter eggs too — type `achievements` to see how many you've found.
+
+The boot screen (`bootscreen.js`, logo in `logo.js`) plays once per browser session; `reboot` in the terminal replays it.
+
 ## Photo album
 The album page (`album.html`) reads everything from the `album/` folder:
 

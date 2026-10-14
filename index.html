@@ -8,7 +8,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;800&family=Orbitron:wght@600;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=202610140953" />
+  <link rel="stylesheet" href="style.css?v=202610141030" />
+  <script>
+    // hide the page until the boot screen takes over (first visit per session only)
+    try { if (sessionStorage.getItem("snf-booted") !== "1" && !matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("booting"); } catch {}
+  </script>
 </head>
 <body>
   <canvas id="hexbg" aria-hidden="true"></canvas>
@@ -102,12 +106,15 @@
   </main>
 
   <footer>
-    <p>&copy; <span id="year"></span> <span data-bind="name"></span> — built with &lt;3 and too much caffeine</p>
+    <p>&copy; <span id="year"></span> <span data-bind="name"></span> — built with &lt;3 on Arch Linux (btw)</p>
   </footer>
 
-  <script src="config.js?v=202610140953"></script>
-  <script src="main.js?v=202610140953"></script>
-  <script src="hex.js?v=202610140953"></script>
-  <script src="nav.js?v=202610140953"></script>
+  <script src="config.js?v=202610141030"></script>
+  <script src="logo.js?v=202610141030"></script>
+  <script src="bootscreen.js?v=202610141030"></script>
+  <script src="main.js?v=202610141030"></script>
+  <script src="terminal.js?v=202610141030"></script>
+  <script src="hex.js?v=202610141030"></script>
+  <script src="nav.js?v=202610141030"></script>
 </body>
 </html>

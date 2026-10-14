@@ -25,6 +25,7 @@
       photos = (data.photos || []).slice().sort((a, b) => (b.date || "").localeCompare(a.date || ""));
       renderFilters();
       render();
+      openFromHash();
     })
     .catch((err) => {
       $("#gallery").innerHTML = `<pre class="album-error">error: could not load ${ALBUM_DIR}album.json (${esc(err.message)})\n\n` +
@@ -62,6 +63,15 @@
         </button>`)
       .join("");
   }
+
+  // deep link: album.html#photo=IMG_1234.jpg opens that photo (used by the terminal)
+  function openFromHash() {
+    const m = location.hash.match(/^#photo=(.+)$/);
+    if (!m) return;
+    const i = visible.findIndex((p) => p.file === decodeURIComponent(m[1]));
+    if (i >= 0) open(i);
+  }
+  addEventListener("hashchange", openFromHash);
 
   // ---------- lightbox ----------
   const lb = $("#lightbox");

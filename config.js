@@ -11,7 +11,7 @@ window.SITE_CONFIG = {
     "Migrating Docker Swarm to Kubernetes.",
     "Turning messy data into insight with AI.",
     "Running a homelab on Proxmox.",
-    "Turning coffee into code.",
+    "I use Arch, btw.",
   ],
   about: [
     "Hi, I'm Sander — an IT and media production student at Kuben VGS who loves coding, hardware and figuring out how things work under the hood.",
@@ -21,7 +21,7 @@ window.SITE_CONFIG = {
   stats: [
     { value: "2", label: "IT internships" },
     { value: "3", label: "workplaces" },
-    { value: "∞", label: "cups of coffee" },
+    { value: "btw", label: "I use Arch" },
   ],
   skills: {
     languages: ["LUA", "JavaScript", "Python", "SQL"],
@@ -31,28 +31,56 @@ window.SITE_CONFIG = {
     "data & ai": ["Snowflake", "Streamlit", "Jupyter Notebook"],
     tools: ["Git", "Linux (arch btw)", "Figma"],
   },
-  // `link` is optional — leave it out for work that isn't public
+  // Each project gets its own page (project.html?p=<name>).
+  // `link` is optional — leave it out for work that isn't public.
+  // `details` = longer write-up shown on the project page.
+  // `report` = the `place` of an experience entry whose reference letter is shown in a "report" tab.
   projects: [
     {
       name: "twitch-chat-overlay",
       description: "A chat box overlay for Twitch streams. Runs locally in Python and plugs into OBS Studio as an HTTP URL.",
       tech: ["Python", "HTTP", "OBS"],
       link: "https://github.com/SanderNF/Twitch-Chat",
+      period: "Sep 2025 — now",
+      details: [
+        "A side project: a chat box overlay for Twitch streams that runs locally in Python.",
+        "The overlay is served over HTTP, so it can be added straight into OBS Studio (or any streaming software) as a browser source URL.",
+      ],
     },
     {
       name: "homelab",
       description: "An old PC running Proxmox, hosting VMs for a Minecraft server, a Palworld server and a web server. Out-of-band management via IP-KVM, a Cisco 16-port gigabit switch and an APC Smart-UPS.",
       tech: ["Proxmox", "Networking", "IP-KVM"],
+      details: [
+        "An old PC running Proxmox, a hypervisor for virtual machines. Among other things it hosts a Minecraft server, a Palworld server and a web server.",
+        "The server has \"lights out\" management through an IP-KVM (internet protocol keyboard, video, mouse), so it can be restarted or reconfigured remotely if something goes wrong at the hardware level.",
+        "It's connected through a Cisco WebView 16-port gigabit switch and backed by an APC Smart-UPS (uninterruptible power supply).",
+      ],
     },
     {
       name: "support-insights",
       description: "Internship project at Spenn: used AI in Snowflake to categorise support requests and built a Streamlit dashboard comparing what the chatbot solves versus human agents.",
       tech: ["Snowflake", "AI", "Streamlit"],
+      period: "Oct — Nov 2025",
+      details: [
+        "Spenn's Customer Care team handles a large volume of support requests, many of them answered by a chatbot. The team needed insight into which kinds of requests the chatbot solves compared to human agents, and a way to follow trends in what users contact them about.",
+        "I structured all the qualitative support data using AI in Snowflake, then built a visualisation dashboard in Streamlit on top of it.",
+        "The dashboard was built so the Customer Care lead can keep using it after the internship ended.",
+      ],
+      report: "Spenn",
     },
     {
       name: "interview-analysis",
       description: "Internship project at Spenn: structured unstructured user interviews and built analyses across themes, reusable for future interviews.",
       tech: ["Snowflake", "AI", "Python"],
+      period: "Oct — Nov 2025",
+      details: [
+        "Spenn regularly runs user interviews to learn how people experience the product, but the result is very unstructured data that's hard to analyse.",
+        "I structured the interview material and built analyses across themes, for example what users see as \"the value of Spenn\", so stakeholders can understand the main findings without reading every interview.",
+        "The solution works for interviews that have already been done and can be reused for future ones.",
+        "At the end of the internship I presented both Spenn projects to the whole tech department.",
+      ],
+      report: "Spenn",
     },
   ],
   experience: [

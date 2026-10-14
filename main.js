@@ -54,13 +54,26 @@
     .join("");
 
   // ---------- projects ----------
+  // the card's link button shows the icon of the site it points to
+  const ICONS = {
+    "github.com": ["GitHub", '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>'],
+  };
+  function linkButton(p) {
+    let host = "";
+    try { host = new URL(p.link).hostname.replace(/^www\./, ""); } catch {}
+    const [site, svg] = ICONS[host] || [host || "link", null];
+    // unknown sites: use their own favicon, falling back to ↗ if it can't load
+    const icon = svg || `<img src="https://${esc(host)}/favicon.ico" alt="" width="20" height="20" loading="lazy" onerror="this.replaceWith('↗')" />`;
+    return `<a class="ext" href="${esc(p.link)}" target="_blank" rel="noopener" aria-label="View ${esc(p.name)} on ${esc(site)}" title="${esc(site)}">${icon}</a>`;
+  }
   $("#projects-grid").innerHTML = C.projects
     .map((p) => `
       <article class="project">
-        <div class="top"><span>&lt;/&gt;</span>${p.link ? `<a href="${esc(p.link)}" target="_blank" rel="noopener" aria-label="Open ${esc(p.name)}">↗</a>` : ""}</div>
-        <h3>${esc(p.name)}</h3>
+        <div class="top"><span>&lt;/&gt;</span>${p.link ? linkButton(p) : ""}</div>
+        <h3><a class="open" href="project.html?p=${encodeURIComponent(p.name)}">${esc(p.name)}</a></h3>
         <p>${esc(p.description)}</p>
         <div class="tags">${p.tech.map((t) => `<span>${esc(t)}</span>`).join("")}</div>
+        <span class="more">./open --details${p.report ? " --report" : ""} →</span>
       </article>`)
     .join("");
 
@@ -80,44 +93,6 @@
   $("#links").innerHTML = Object.entries(C.contact)
     .map(([k, v]) => `<a href="${esc(k === "email" ? "mailto:" + v : v)}" target="_blank" rel="noopener">${esc(k)}</a>`)
     .join("");
-
-  // ---------- interactive terminal ----------
-  const out = $("#term-out"), input = $("#term-input"), body = $("#term-body");
-  const print = (html) => { out.insertAdjacentHTML("beforeend", `<div>${html}</div>`); body.scrollTop = body.scrollHeight; };
-  const commands = {
-    help: () => "available commands:\n" +
-      ["about", "skills", "projects", "experience", "contact", "album", "whoami", "date", "clear", "sudo"]
-        .map((c) => `  <span class="t-hl">${c}</span>`).join("\n"),
-    about: () => C.about.map(esc).join("\n\n"),
-    whoami: () => `${esc(C.name)} — ${esc(C.role)}`,
-    skills: () => Object.entries(C.skills).map(([g, i]) => `<span class="t-hl">${esc(g)}</span>: ${i.map(esc).join(", ")}`).join("\n"),
-    projects: () => C.projects.map((p) => `<span class="t-hl">${esc(p.name)}</span> — ${esc(p.description)}${p.link ? `\n  <a href="${esc(p.link)}" target="_blank" rel="noopener">${esc(p.link)}</a>` : ""}`).join("\n"),
-    experience: () => C.experience.map((e) => `[${esc(e.period)}] <span class="t-hl">${esc(e.title)}</span> @ ${esc(e.place)}`).join("\n"),
-    contact: () => Object.entries(C.contact).map(([k, v]) => `${esc(k)}: <a href="${esc(k === "email" ? "mailto:" + v : v)}" target="_blank" rel="noopener">${esc(v)}</a>`).join("\n"),
-    album: () => { setTimeout(() => (location.href = "album.html"), 600); return `opening <a href="album.html">album.html</a> ...`; },
-    date: () => new Date().toString(),
-    sudo: () => `<span class="t-err">permission denied: nice try 😉</span>`,
-    clear: () => { out.innerHTML = ""; return null; },
-  };
-  const history = [];
-  let hIdx = 0;
-  print(`welcome to ${esc(C.handle)}.sh — type <span class="t-hl">help</span> to get started.`);
-  $("#term-form").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const cmd = input.value.trim();
-    input.value = "";
-    if (!cmd) return;
-    history.push(cmd); hIdx = history.length;
-    print(`<span class="prompt">guest@${esc(C.handle)}:~$</span> <span class="t-cmd">${esc(cmd)}</span>`);
-    const fn = commands[cmd.toLowerCase()];
-    const res = fn ? fn() : `<span class="t-err">command not found: ${esc(cmd)}</span> — try <span class="t-hl">help</span>`;
-    if (res !== null) print(res);
-  });
-  input.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowUp" && hIdx > 0) { input.value = history[--hIdx]; e.preventDefault(); }
-    if (e.key === "ArrowDown") { hIdx = Math.min(hIdx + 1, history.length); input.value = history[hIdx] || ""; }
-  });
-  body.addEventListener("click", () => input.focus({ preventScroll: true }));
 
   // ---------- scroll reveal ----------
   const io = new IntersectionObserver((entries) =>
