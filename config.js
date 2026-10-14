@@ -33,10 +33,20 @@ window.SITE_CONFIG = {
     "data & ai": ["Snowflake", "Streamlit", "Jupyter Notebook"],
     tools: ["Git", "Linux (arch btw)", "JIRA", "Confluence", "Figma"],
   },
+  // GitHub stat cards from github-stats-extended, through your own endpoint.
+  // Colours and language are added automatically to match the site. Set to null to hide the cards.
+  githubStats: {
+    endpoint: "http://sandernf.xyz:8000/githubstats/api",
+    username: "SanderNF",
+    stats: { show_icons: "true", hide_rank: "true" },
+    topLangs: { langs_count: "8", hide: "css", layout: "compact" },
+  },
   // Each project gets its own page (project.html?p=<name>).
   // `link` is optional — leave it out for work that isn't public.
   // `details` = longer write-up shown on the project page.
   // `report` = the `place` of an experience entry whose reference letter is shown in a "report" tab.
+  // `files` = Markdown files (paths from the site root) shown as extra tabs, e.g. ["networkmap.md"].
+  //   Use { en: "…", no: "…" } for a file that has a Norwegian version.
   projects: [
     {
       name: "twitch-chat-overlay",
@@ -51,12 +61,14 @@ window.SITE_CONFIG = {
     },
     {
       name: "homelab",
-      description: { en: "An old PC running Proxmox, hosting VMs for a Minecraft server, a Palworld server and a web server. Out-of-band management via IP-KVM, a Cisco 16-port gigabit switch and an APC Smart-UPS.", no: "En gammel PC som kjører Proxmox, med VM-er for en Minecraft-server, en Palworld-server og en webserver. Fjernstyring via IP-KVM, en Cisco 16-ports gigabit-switch og en APC Smart-UPS." },
-      tech: ["Proxmox", "Networking", "IP-KVM"],
+      description: { en: "An old PC running Proxmox, hosting a Minecraft server, a Palworld server, a web server, Ollama, Pi-hole and TrueNAS. Out-of-band management via PiKVM, a network of UniFi and Cisco switches (including a 48-port Catalyst PoE), and an APC Smart-UPS.", no: "En gammel PC som kjører Proxmox, med en Minecraft-server, en Palworld-server, en webserver, Ollama, Pi-hole og TrueNAS. Fjernstyring via PiKVM, et nettverk av UniFi- og Cisco-switcher (blant annet en 48-ports Catalyst PoE) og en APC Smart-UPS." },
+      tech: ["Proxmox", "Networking", "PiKVM", "UniFi", "Cisco"],
+      files: [{ en: "networkmap.md", no: "i18n/no/networkmap.md" }],
       details: [
-        { en: "An old PC running Proxmox, a hypervisor for virtual machines. Among other things it hosts a Minecraft server, a Palworld server and a web server.", no: "En gammel PC som kjører Proxmox, en hypervisor for virtuelle maskiner. Blant annet kjører den en Minecraft-server, en Palworld-server og en webserver." },
-        { en: "The server has \"lights out\" management through an IP-KVM (internet protocol keyboard, video, mouse), so it can be restarted or reconfigured remotely if something goes wrong at the hardware level.", no: "Serveren har «lights out»-administrasjon gjennom en IP-KVM (internet protocol keyboard, video, mouse), så den kan startes på nytt eller rekonfigureres eksternt hvis noe går galt på maskinvarenivå." },
-        { en: "It's connected through a Cisco WebView 16-port gigabit switch and backed by an APC Smart-UPS (uninterruptible power supply).", no: "Den er koblet til en Cisco WebView 16-ports gigabit-switch og sikret med en APC Smart-UPS (avbruddsfri strømforsyning)." },
+        { en: "An old PC running Proxmox, a hypervisor for virtual machines. It hosts a Minecraft server, a Palworld server and a web server, plus Ollama for running AI models locally, Pi-hole for network-wide ad blocking, and TrueNAS for storage.", no: "En gammel PC som kjører Proxmox, en hypervisor for virtuelle maskiner. Den kjører en Minecraft-server, en Palworld-server og en webserver, i tillegg til Ollama for å kjøre KI-modeller lokalt, Pi-hole for reklameblokkering i hele nettverket og TrueNAS for lagring." },
+        { en: "The server has \"lights out\" management through a PiKVM (an IP-KVM: internet protocol keyboard, video, mouse), so it can be restarted or reconfigured remotely if something goes wrong at the hardware level.", no: "Serveren har «lights out»-administrasjon gjennom en PiKVM (en IP-KVM: internet protocol keyboard, video, mouse), så den kan startes på nytt eller rekonfigureres eksternt hvis noe går galt på maskinvarenivå." },
+        { en: "The network runs from the router to a UniFi 8-port PoE switch in the living room, then over a longer cable run to a Cisco WebView 16-port gigabit switch and a newly acquired Cisco Catalyst 48-port PoE switch. The Proxmox server is connected with two gigabit cables, alongside the PiKVM.", no: "Nettverket går fra ruteren til en UniFi 8-ports PoE-switch i stua, og videre over en lengre kabel til en Cisco WebView 16-ports gigabit-switch og en nyinnkjøpt Cisco Catalyst 48-ports PoE-switch. Proxmox-serveren er koblet til med to gigabit-kabler, sammen med PiKVM-en." },
+        { en: "Everything is backed by an APC Smart-UPS (uninterruptible power supply).", no: "Alt er sikret med en APC Smart-UPS (avbruddsfri strømforsyning)." },
       ],
     },
     {

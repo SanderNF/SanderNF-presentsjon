@@ -20,6 +20,7 @@ window.I18N = (() => {
       "footer": "built with <3 on Arch Linux (btw)",
       "link.view": "View {name} on {site}",
       "skill.languages": "languages", "skill.tools": "tools", "skill.data & ai": "data & ai",
+      "gh.stats": "My GitHub stats", "gh.langs": "Most used languages",
       // album
       "album.all": "all", "album.count.one": "{n} item", "album.count": "{n} items", "album.untitled": "Photo album",
       "meta.date": "date", "meta.location": "location", "meta.camera": "camera", "meta.lens": "lens", "meta.focal": "focal",
@@ -42,6 +43,7 @@ window.I18N = (() => {
       "footer": "laget med <3 på Arch Linux (btw)",
       "link.view": "Se {name} på {site}",
       "skill.languages": "språk", "skill.tools": "verktøy", "skill.data & ai": "data & KI",
+      "gh.stats": "Min GitHub-statistikk", "gh.langs": "Mest brukte språk",
       "album.all": "alle", "album.count.one": "{n} bilde", "album.count": "{n} bilder", "album.untitled": "Fotoalbum",
       "meta.date": "dato", "meta.location": "sted", "meta.camera": "kamera", "meta.lens": "objektiv", "meta.focal": "brennvidde",
       "meta.aperture": "blender", "meta.shutter": "lukker", "meta.iso": "iso",

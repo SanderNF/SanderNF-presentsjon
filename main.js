@@ -65,6 +65,23 @@
       .map(([group, items]) => `<div class="skill-group"><h3>// ${esc(t("skill." + group, {}, L(group)))}</h3><ul>${items.map((i) => `<li>${esc(i)}</li>`).join("")}</ul></div>`)
       .join("");
 
+    // ---------- GitHub stat cards (github-stats-extended) ----------
+    const gh = C.githubStats;
+    if (gh?.endpoint) {
+      const theme = { bg_color: "00000000", hide_border: "true", title_color: "00ffa3", text_color: "c9d6e8", icon_color: "00d4ff" };
+      const lang = window.I18N.lang;
+      const card = (path, opts, titleKey, file) => {
+        const q = new URLSearchParams({ username: gh.username, ...opts, ...theme, custom_title: t(titleKey), locale: lang === "no" ? "no" : "en" });
+        return `<figure class="code-card gh-card">
+            <div class="win-bar"><i></i><i></i><i></i><span>${file}</span></div>
+            <img src="${esc(`${gh.endpoint}${path}?${q}`)}" alt="${esc(t(titleKey))}" loading="lazy" onerror="this.closest('.gh-card').remove()" />
+          </figure>`;
+      };
+      $("#gh-stats").innerHTML =
+        card("", gh.stats, "gh.stats", "stats.svg") +
+        card("/top-langs/", gh.topLangs, "gh.langs", "top-langs.svg");
+    }
+
     // ---------- projects ----------
     // the card's link button shows the icon of the site it points to
     const ICONS = {

@@ -18,6 +18,8 @@ The site can be shown in English, Norwegian or 1337 (globe icon in the top bar, 
 ## Projects
 Each project in `config.js` gets its own page at `project.html?p=<name>`, with a `README.md` tab built from `description` + `details`. Set `report` to an experience `place` (e.g. `"Spenn"`) to add a `report.txt` tab showing that entry's reference letter.
 
+Add `files` to show Markdown files as extra tabs, e.g. `files: ["networkmap.md"]`. For a file with a Norwegian version, use `{ en: "networkmap.md", no: "i18n/no/networkmap.md" }`. Norwegian versions live in `i18n/no/`.
+
 ## Terminal
 The terminal on the home page (`terminal.js`) has a small fake filesystem built from `config.js` and `album/album.json`: `ls`, `cd`, `cat`, `grep`, `find`, `tree`, pipes, tab completion, and photo search (`grep -i sigma -r album`). There are a few easter eggs too — type `achievements` to see how many you've found.
 

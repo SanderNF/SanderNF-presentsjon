@@ -217,6 +217,12 @@ h2::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg
 .skill-group li { font-size: 0.88rem; padding: 3px 0; }
 .skill-group li::before { content: "▹ "; color: var(--accent); }
 
+/* GitHub stat cards */
+.gh-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 24px; }
+.gh-stats:empty { display: none; }
+.gh-card { margin: 0; overflow: hidden; }
+.gh-card img { display: block; width: 100%; max-width: 420px; height: auto; margin: 0 auto; padding: 8px 6px 4px; }
+
 /* ---------- projects ---------- */
 .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 22px; }
 .project {
@@ -270,6 +276,25 @@ h2::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg
 .pp-lead { color: #fff; }
 .pp-meta { color: var(--muted); font-size: 0.8rem; border-bottom: 1px dashed var(--border); padding-bottom: 12px; }
 .pp-meta b { color: var(--accent); font-weight: 600; }
+/* Markdown file tabs */
+.pp-panel.md { max-width: 100%; }
+.md h1 { color: #fff; font-family: var(--display); font-size: 1.3rem; margin-bottom: 12px; }
+.md h2 { color: var(--accent-2); font-size: 1rem; margin: 28px 0 10px; }
+.md h2::after { display: none; }
+.md h2::before { content: "## "; color: var(--muted); }
+.md strong { color: #fff; }
+.md code { color: var(--accent); background: rgba(0, 255, 163, 0.06); padding: 1px 5px; border-radius: 3px; }
+.md pre { background: rgba(0, 0, 0, 0.35); border: 1px solid var(--border); border-radius: 6px; padding: 14px; overflow-x: auto; margin: 0 0 14px; line-height: 1.35; }
+.md pre code { background: none; padding: 0; color: var(--text); }
+.md table { border-collapse: collapse; width: 100%; font-size: 0.82rem; margin-bottom: 14px; display: block; overflow-x: auto; }
+.md th, .md td { border: 1px solid var(--border); padding: 7px 10px; text-align: left; vertical-align: top; }
+.md th { color: var(--accent); background: rgba(0, 255, 163, 0.05); font-weight: 600; }
+.md ul { padding-left: 20px; margin-bottom: 12px; }
+.md li { margin-bottom: 4px; }
+.md li:has(> input[type="checkbox"]) { list-style: none; margin-left: -20px; }
+.md input[type="checkbox"] { accent-color: var(--accent); margin-right: 8px; }
+.md-diagram { margin: 6px 0 20px; padding: 16px; border: 1px solid var(--border); border-radius: 6px; background: rgba(0, 0, 0, 0.3); overflow-x: auto; text-align: center; }
+.md-diagram svg { max-width: 100%; height: auto; }
 
 /* ---------- timeline ---------- */
 .timeline { list-style: none; border-left: 1px solid var(--border); padding-left: 28px; }
