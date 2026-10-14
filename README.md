@@ -75,7 +75,7 @@ Options: `--root DIR` (folder to serve, default `.`), `--host ADDR` (default `0.
 ./server/install-service.sh --dry-run            # just print the systemd unit it would install
 ./server/install-service.sh --uninstall          # remove it again
 ```
-Run it as your normal user (it asks for `sudo` when needed). The service runs as you, read-only, with systemd hardening. Logs: `journalctl -u snf-server -f`. Run the script again after updating the code to rebuild and restart.
+Run it as your normal user (it asks for `sudo` when needed), with `sudo`, or as root. The service never runs as root by default: it runs as you, or as a dedicated `snf-server` system user when the script is run directly as root (pick another account with `--user NAME`). It's read-only, with systemd hardening. Logs: `journalctl -u snf-server -f`. Run the script again after updating the code to rebuild and restart.
 
 ### Quick alternative
 ```sh
