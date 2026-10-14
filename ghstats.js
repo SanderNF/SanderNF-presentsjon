@@ -96,7 +96,7 @@
   // ---------- rendering ----------
   const ICONS = { stars: "★", commits: "⎇", prs: "⇄", issues: "◎", contribs: "⬡" };
   const bar = (file) => `<div class="win-bar"><i></i><i></i><i></i><span>${esc(file)}</span></div>`;
-  const term = (body) => `<div class="code-card gh-term">${bar(`gh stats --user ${gh.username}`)}${body}</div>`;
+  const term = (body) => `<div class="code-card gh-term">${bar(`gh cards --user ${gh.username}`)}${body}</div>`;
   const cardBox = (c, inner) => `<figure class="code-card gh-card">${bar(c.file)}${inner}</figure>`;
 
   let state = "loading", data = null;
@@ -154,7 +154,7 @@
     const line = state === "error"
       ? `<span class="t-err">${esc(t("gh.error"))}</span> <button type="button" class="gh-retry">${esc(t("gh.retry"))}</button>`
       : `<span class="t-dim">${esc(t("gh.loading"))}</span><span class="caret">█</span>`;
-    root.innerHTML = term(`<p class="gh-loading"><span class="prompt">$</span> gh stats ${line}</p>`);
+    root.innerHTML = term(`<p class="gh-loading"><span class="prompt">$</span> gh cards ${line}</p>`);
     root.querySelector(".gh-retry")?.addEventListener("click", load);
   }
 
@@ -171,7 +171,7 @@
   window.I18N.onChange(render);
   load();
 
-  // ---------- shared with the terminal: `gh stats`, `gh langs --top N` ----------
+  // ---------- shared with the terminal: `gh stats`, `gh langs --top N`, `gh cards` ----------
   const pending = {};
   const once = (key, fn) => (pending[key] ??= fn().catch((e) => { delete pending[key]; throw e; }));
   const defaultTop = +gh.topLangs?.langs_count || 5;

@@ -224,7 +224,7 @@
       H(`<span class="t-hl">search</span>       grep [-i -v -n -r -l -c] &lt;pattern&gt; [path]   find [path] -name &lt;pattern&gt;`),
       H(`<span class="t-hl">open</span>         photos   open &lt;photo|project&gt;   album`),
       H(`<span class="t-hl">shortcuts</span>    about   skills   projects   experience   contact`),
-      H(`<span class="t-hl">github</span>       gh stats   gh langs [--top N]`),
+      H(`<span class="t-hl">github</span>       gh stats   gh langs [--top N]   gh cards`),
       H(`<span class="t-hl">language</span>     lang [en|no|1337]`),
       H(`<span class="t-hl">system</span>       whoami   neofetch   hyfetch [-c]   fastfetch   banner   history   date   echo   clear   reboot   achievements`),
       H(`<span class="t-hl">packages</span>     pacman -Syu   pacman -S &lt;pkg&gt;   yay   <span class="t-dim">(arch, btw)</span>`),
@@ -445,12 +445,13 @@
       I18N.set(code);
       return [T(code === "leet" ? "l4n9u493 537 70 1337. h4ck 7h3 pl4n37." : `page language set to ${names[code]}.`, "t-ok")];
     },
-    gh: async (args) => {
+    gh: async (args, stdin, ctx) => {
       const api = window.SNF_GH;
       const [sub, ...rest] = args;
       const usage = [
         T("usage: gh stats            github stats"),
         T("       gh langs [--top N]  most used languages (N = 1–20)"),
+        T("       gh cards [--top N]  both, side by side"),
       ];
       if (!sub || ["help", "-h", "--help"].includes(sub)) return usage;
       if (!api) return [err("gh: github stats aren't set up on this site")];
@@ -458,10 +459,7 @@
         ? "gh: can't read the stats server from here (it needs an Access-Control-Allow-Origin header, or you're offline)"
         : "gh: the stats server returned an error. try again in a bit")];
 
-      if (sub === "stats") {
-        print([T(`fetching stats for ${api.username} …`, "t-dim")]);
-        let stats;
-        try { stats = await api.stats(); } catch (e) { return fail(e); }
+      const statsLines = (stats) => {
         const LABELS = { stars: "stars", commits: api.commitsAll ? "commits" : "commits (last year)", prs: "pull requests", issues: "issues", contribs: "contributed to (last year)" };
         const ICONS = { stars: "★", commits: "⎇", prs: "⇄", issues: "◎", contribs: "⬡" };
         const width = Math.max(...stats.map(([id]) => LABELS[id].length)) + 4;
@@ -469,17 +467,8 @@
           const dots = " " + ".".repeat(width - LABELS[id].length) + " ";
           return H(`<span class="t-hl">${ICONS[id]}</span> ${esc(LABELS[id])}<span class="t-dim">${dots}</span><span class="t-ok">${esc(v)}</span>`, `${ICONS[id]} ${LABELS[id]}${dots}${v}`);
         });
-      }
-
-      if (sub === "langs") {
-        let n;
-        const i = rest.findIndex((a) => a === "--top" || a === "-n");
-        if (i >= 0) n = rest[i + 1];
-        else n = rest.find((a) => a.startsWith("--top="))?.slice(6);
-        if (n !== undefined && !(/^\d+$/.test(n) && +n >= 1 && +n <= 20)) return [err("gh: --top needs a number from 1 to 20")];
-        print([T(`fetching languages for ${api.username} …`, "t-dim")]);
-        let langs;
-        try { langs = await api.langs(n === undefined ? undefined : +n); } catch (e) { return fail(e); }
+      };
+      const langsLines = (langs) => {
         const max = Math.max(...langs.map((l) => l.pct)), W = 20;
         const nameW = Math.max(...langs.map((l) => l.name.length)) + 2;
         return langs.map((l) => {
@@ -490,6 +479,43 @@
             `${l.name.padEnd(nameW)}${"█".repeat(filled)}${"░".repeat(W - filled)} ${pct}`,
           );
         });
+      };
+      // --top N / -n N / --top=N, for langs and cards
+      const topArg = () => {
+        const i = rest.findIndex((a) => a === "--top" || a === "-n");
+        const n = i >= 0 ? rest[i + 1] : rest.find((a) => a.startsWith("--top="))?.slice(6);
+        if (n === undefined) return { n: undefined };
+        return /^\d+$/.test(n) && +n >= 1 && +n <= 20 ? { n: +n } : { error: [err("gh: --top needs a number from 1 to 20")] };
+      };
+
+      if (sub === "stats") {
+        print([T(`fetching stats for ${api.username} …`, "t-dim")]);
+        try { return statsLines(await api.stats()); } catch (e) { return fail(e); }
+      }
+
+      if (sub === "langs") {
+        const top = topArg();
+        if (top.error) return top.error;
+        print([T(`fetching languages for ${api.username} …`, "t-dim")]);
+        try { return langsLines(await api.langs(top.n)); } catch (e) { return fail(e); }
+      }
+
+      if (sub === "cards") {
+        const top = topArg();
+        if (top.error) return top.error;
+        print([T(`fetching stats and languages for ${api.username} …`, "t-dim")]);
+        let stats, langs;
+        try { [stats, langs] = await Promise.all([api.stats(), api.langs(top.n)]); } catch (e) { return fail(e); }
+        const left = [H(`<span class="prompt">$</span> gh stats`, "$ gh stats"), ...statsLines(stats)];
+        const right = [H(`<span class="prompt">$</span> gh langs --top ${langs.length}`, `$ gh langs --top ${langs.length}`), ...langsLines(langs)];
+        // piped: plain text columns, padded so they line up
+        if (ctx?.piped) {
+          const w = Math.max(...left.map((l) => l.text.length)) + 4;
+          return Array.from({ length: Math.max(left.length, right.length) }, (_, i) => T(((left[i]?.text || "").padEnd(w) + (right[i]?.text || "")).trimEnd()));
+        }
+        // on screen: two columns that stack when the terminal is narrow
+        const col = (ls) => `<div class="gh-col">${ls.map((l) => `<div>${l.html}</div>`).join("")}</div>`;
+        return [H(`<div class="gh-cards">${col(left)}${col(right)}</div>`, [...left, ...right].map((l) => l.text).join("\n"))];
       }
       return [err(`gh: unknown command '${sub}'`), ...usage];
     },
