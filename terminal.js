@@ -720,7 +720,7 @@
     ov.innerHTML = `<div class="nuke-warn">⚠ NUCLEAR LAUNCH DETECTED ⚠</div><div class="nuke-count"></div>`;
     document.body.appendChild(ov);
     for (const n of ["3", "2", "1"]) { ov.querySelector(".nuke-count").textContent = n; await sleep(650); }
-    ov.innerHTML = `<div class="shake"><pre class="nuke-cloud">${esc(CLOUD)}</pre><div class="nuke-warn">💥 KABOOM 💥</div></div>`;
+    ov.innerHTML = `<div class="shake"><pre class="nuke-cloud">${esc(CLOUD_TEXT)}</pre><div class="nuke-warn">💥 KABOOM 💥</div></div>`;
     ov.classList.add("boom");
     await sleep(2400);
     ov.remove();
@@ -758,7 +758,12 @@
     "                   `-=#$%&%$#=-'        ",
     "                      | ;  :|           ",
     "             _____.,-#%&$@%#&#~,._____  ",
-  ].join("\n");
+  ];
+  // drop the shared indent and trailing spaces so the <pre> is exactly as wide as the drawing (and centres properly)
+  const CLOUD_TEXT = (() => {
+    const indent = Math.min(...CLOUD.filter((l) => l.trim()).map((l) => l.length - l.trimStart().length));
+    return CLOUD.map((l) => l.slice(indent).trimEnd()).join("\n");
+  })();
 
   // ---------- terminal UI ----------
   const out = $("#term-out"), input = $("#term-input"), body = $("#term-body"), promptEl = $("#term-form .prompt");
