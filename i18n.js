@@ -9,7 +9,7 @@ window.I18N = (() => {
   const STRINGS = {
     en: {
       "nav.about": "about", "nav.skills": "skills", "nav.projects": "projects", "nav.experience": "experience",
-      "nav.terminal": "terminal", "nav.contact": "contact", "nav.album": "album",
+      "nav.terminal": "terminal", "nav.contact": "contact", "nav.album": "photo album",
       "nav.open": "Open menu", "nav.close": "Close menu", "lang.label": "Language",
       "h.about": "about_me", "h.skills": "tech_stack", "h.projects": "projects", "h.experience": "experience.log",
       "h.terminal": "interactive_shell", "h.contact": "establish_connection",
@@ -35,7 +35,7 @@ window.I18N = (() => {
     },
     no: {
       "nav.about": "om meg", "nav.skills": "ferdigheter", "nav.projects": "prosjekter", "nav.experience": "erfaring",
-      "nav.terminal": "terminal", "nav.contact": "kontakt", "nav.album": "album",
+      "nav.terminal": "terminal", "nav.contact": "kontakt", "nav.album": "fotoalbum",
       "nav.open": "Åpne meny", "nav.close": "Lukk meny", "lang.label": "Språk",
       "h.about": "om_meg", "h.skills": "teknologi", "h.projects": "prosjekter", "h.experience": "erfaring.log",
       "h.terminal": "interaktivt_skall", "h.contact": "opprett_forbindelse",

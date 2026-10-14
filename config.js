@@ -18,7 +18,7 @@ window.SITE_CONFIG = {
   about: [
     { en: "Hi, I'm Sander — an IT and media production student at Kuben VGS who loves coding, hardware and figuring out how things work under the hood.", no: "Hei, jeg er Sander — elev på informasjonsteknologi og medieproduksjon ved Kuben VGS. Jeg elsker koding, maskinvare og å finne ut hvordan ting fungerer under panseret." },
     { en: "I've done IT internships at Statens pensjonskasse, where I worked on their new development platform with Docker, Kubernetes and Go, and at Spenn, where I used AI to turn large amounts of qualitative data into insight.", no: "Jeg har hatt IT-praksis hos Statens pensjonskasse, der jeg jobbet med deres nye utviklingsplattform med Docker, Kubernetes og Go, og hos Spenn, der jeg brukte KI til å gjøre store mengder kvalitative data om til innsikt." },
-    { en: "In my spare time I build PCs, run a homelab, and tinker with microelectronics and 3D printing.", no: "På fritiden bygger jeg PC-er, drifter en homelab og tukler med mikroelektronikk og 3D-printing." },
+    { en: "In my spare time I build PCs, run a homelab, tinker with microelectronics and 3D printing, and enjoy photography.", no: "På fritiden bygger jeg PC-er, drifter en homelab, tukler med mikroelektronikk og 3D-printing, og driver med fotografering." },
   ],
   stats: [
     { value: "2", label: { en: "IT internships", no: "IT-praksiser" } },
