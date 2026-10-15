@@ -14,7 +14,10 @@
 
   // card colours and language, used for the original-look cards (svg and img)
   const themed = (titleKey) => ({
-    bg_color: "00000000", hide_border: "true", title_color: "00ffa3", text_color: "c9d6e8", icon_color: "00d4ff",
+    bg_color: "00000000", hide_border: "true", text_color: "c9d6e8",
+    // title and icons in the site's accents (flag preset)
+    title_color: (getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#00ffa3").slice(1),
+    icon_color: (getComputedStyle(document.documentElement).getPropertyValue("--accent-2").trim() || "#00d4ff").slice(1),
     custom_title: t(titleKey), locale: window.I18N.lang === "no" ? "no" : "en",
   });
   const CARDS = [

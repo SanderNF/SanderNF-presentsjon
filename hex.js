@@ -2,6 +2,16 @@
 (() => {
   const $ = (sel) => document.querySelector(sel);
   const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // hexagon colours follow the flag preset (theme.js)
+  let lineRgb = "0, 255, 163", fillRgb = "0, 212, 255";
+  const readColours = () => {
+    const cs = getComputedStyle(document.documentElement);
+    // a preset with its own background colour (--hex-*) colours the hexagons too; otherwise the accents
+    lineRgb = cs.getPropertyValue("--hex-rgb").trim() || cs.getPropertyValue("--accent-rgb").trim() || lineRgb;
+    fillRgb = cs.getPropertyValue("--hex-fill-rgb").trim() || cs.getPropertyValue("--accent-2-rgb").trim() || fillRgb;
+  };
+  readColours();
+  window.SNF_FLAG?.onChange(() => { readColours(); if (reducedMotion) draw(); });
   const cv = $("#hexbg"), ctx = cv.getContext("2d");
   const R = 30;                       // hex radius (px) — change for bigger/smaller cells
   const W = R * 1.5, H = Math.sqrt(3) * R;
@@ -32,11 +42,11 @@
       const near = Math.max(0, 1 - d / 220);           // cursor glow
       const g = Math.max(h.glow, near);
       hexPath(h.x, h.y, R - 2);
-      ctx.strokeStyle = `rgba(0, 255, 163, ${0.06 + g * 0.55})`;
+      ctx.strokeStyle = `rgba(${lineRgb}, ${0.06 + g * 0.55})`;
       ctx.lineWidth = 1;
       ctx.stroke();
       if (g > 0.05) {
-        ctx.fillStyle = `rgba(0, 212, 255, ${g * 0.08})`;
+        ctx.fillStyle = `rgba(${fillRgb}, ${g * 0.08})`;
         ctx.fill();
       }
       h.glow *= 0.97;

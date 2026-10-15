@@ -43,11 +43,13 @@
     const diagrams = [...box.querySelectorAll("code.language-mermaid")];
     if (diagrams.length) {
       await loadScript("https://cdn.jsdelivr.net/npm/mermaid@11.9.0/dist/mermaid.min.js");
+      // diagram colours follow the site's accents (flag preset)
+      const cs = getComputedStyle(document.documentElement), css = (v) => cs.getPropertyValue(v).trim();
       window.mermaid.initialize({
         startOnLoad: false, theme: "base", fontFamily: "JetBrains Mono, monospace",
         themeVariables: {
-          background: "#05070d", primaryColor: "#0a1424", primaryTextColor: "#c9d6e8", primaryBorderColor: "#00ffa3",
-          lineColor: "#00d4ff", secondaryColor: "#0a0f1c", tertiaryColor: "#0a0f1c", clusterBkg: "rgba(0, 255, 163, 0.04)",
+          background: "#05070d", primaryColor: "#0a1424", primaryTextColor: "#c9d6e8", primaryBorderColor: css("--accent") || "#00ffa3",
+          lineColor: css("--accent-2") || "#00d4ff", secondaryColor: "#0a0f1c", tertiaryColor: "#0a0f1c", clusterBkg: `rgba(${css("--accent-rgb") || "0, 255, 163"}, 0.04)`,
           clusterBorder: "#1f3a33", edgeLabelBackground: "#05070d", fontSize: "13px",
         },
       });
