@@ -227,6 +227,37 @@ h2::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg
 .win-bar i:nth-child(3) { background: #28c840; }
 .win-bar span { margin-left: 10px; }
 
+/* window title bars look like the visitor's OS. theme.js sets <html data-os="mac|win|linux">
+   (detected, or ?win / ?mac / ?linux / ?os=…). mac is the default look above. Same markup for all:
+   three <i> buttons, then the title (or the project tabs) */
+.win-bar > i { flex-shrink: 0; }
+/* Windows 11: title on the left, flat ─ ☐ ✕ on the right, close turns red on hover */
+[data-os="win"] .win-bar { gap: 0; padding-right: 0; }
+[data-os="win"] .win-bar > :not(i) { order: -1; flex: 1; margin-left: 0; }
+[data-os="win"] .win-bar > i {
+  width: 42px; height: 30px; margin: -10px 0; border-radius: 0; background: transparent;
+  display: grid; place-items: center; font-style: normal; font-size: 11px; color: var(--muted);
+  transition: background .15s, color .15s;
+}
+[data-os="win"] .win-bar > i:nth-child(1)::before { content: "─"; }
+[data-os="win"] .win-bar > i:nth-child(2)::before { content: "☐"; font-size: 13px; }
+[data-os="win"] .win-bar > i:nth-child(3)::before { content: "✕"; }
+[data-os="win"] .win-bar > i:hover { background: rgba(255, 255, 255, 0.08); color: var(--text); }
+[data-os="win"] .win-bar > i:nth-child(3):hover { background: #c42b1c; color: #fff; }
+/* Linux (GNOME): title centred, round buttons on the right */
+[data-os="linux"] .win-bar > :not(i) { order: -1; flex: 1; margin-left: 0; text-align: center; }
+[data-os="linux"] .win-bar > i {
+  width: 20px; height: 20px; background: rgba(255, 255, 255, 0.09);
+  display: grid; place-items: center; font-style: normal; font-size: 10px; color: var(--text);
+}
+[data-os="linux"] .win-bar > i:nth-child(1)::before { content: "−"; }
+[data-os="linux"] .win-bar > i:nth-child(2)::before { content: "□"; font-size: 11px; }
+[data-os="linux"] .win-bar > i:nth-child(3)::before { content: "✕"; }
+[data-os="linux"] .win-bar > i:hover { background: rgba(255, 255, 255, 0.18); }
+/* the project page's tab bar keeps its tabs on the left */
+[data-os="win"] .pp-tabbar > .pp-tabs, [data-os="linux"] .pp-tabbar > .pp-tabs { margin-left: 0; text-align: left; }
+[data-os="linux"] .pp-tabbar { padding-right: 14px; }
+
 /* ---------- about ---------- */
 .about-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: start; }
 .code-card pre { padding: 18px; font-size: 0.82rem; overflow-x: auto; }

@@ -128,6 +128,31 @@
     const name = FLAG_ALIASES[k] || k;
     return FLAGS[name] ? name : null;
   };
+  // ---------- window title bars that look like the visitor's OS ----------
+  // detected from the browser; a link can pick one with ?win, ?mac, ?linux or ?os=<name>
+  // (kept for the visit, like the flag link option)
+  const OS_NAMES = { win: "win", windows: "win", mac: "mac", macos: "mac", osx: "mac", darwin: "mac", ios: "mac", linux: "linux", gnome: "linux" };
+  // the most reliable source first: client hints, then navigator.platform, then the user-agent string
+  const detectOS = () => {
+    for (const src of [navigator.userAgentData?.platform, navigator.platform, navigator.userAgent]) {
+      const p = String(src || "").toLowerCase();
+      if (!p) continue;
+      if (/mac|darwin|iphone|ipad|ipod/.test(p)) return "mac"; // before "win": "darwin" contains "win"
+      if (/windows|win32|win64/.test(p)) return "win";
+      if (/linux|x11|cros|chrome os|android/.test(p)) return "linux";
+    }
+    return "mac";
+  };
+  {
+    const q = new URLSearchParams(location.search);
+    let os = OS_NAMES[(q.get("os") || "").trim().toLowerCase()] || ["win", "mac", "linux"].find((o) => q.has(o)) || null;
+    try {
+      if (os) sessionStorage.setItem("snf-os", os);
+      else os = OS_NAMES[sessionStorage.getItem("snf-os")] || null;
+    } catch {}
+    document.documentElement.dataset.os = os || detectOS();
+  }
+
   // Which flag to show, in order:
   //   1. a choice made with `hyfetch -c` / `-p`: saved in localStorage, only in that browser
   //   2. a link option, ?flag=<preset> or just ?nb: kept for this visit (sessionStorage) so moving
