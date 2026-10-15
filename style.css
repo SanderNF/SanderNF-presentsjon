@@ -225,7 +225,7 @@ h2::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg
 .win-bar i { width: 11px; height: 11px; border-radius: 50%; background: #ff5f57; }
 .win-bar i:nth-child(2) { background: #febc2e; }
 .win-bar i:nth-child(3) { background: #28c840; }
-.win-bar span { margin-left: 10px; }
+.win-bar > span { margin-left: 10px; } /* the title only, not spans nested inside it */
 
 /* window title bars look like the visitor's OS. theme.js sets <html data-os="mac|win|linux">
    (detected, or ?win / ?mac / ?linux / ?os=…). mac is the default look above. Same markup for all:
@@ -239,24 +239,50 @@ h2::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg
   display: grid; place-items: center; font-style: normal; font-size: 11px; color: var(--muted);
   transition: background .15s, color .15s;
 }
-[data-os="win"] .win-bar > i:nth-child(1)::before { content: "─"; }
-[data-os="win"] .win-bar > i:nth-child(2)::before { content: "☐"; font-size: 13px; }
-[data-os="win"] .win-bar > i:nth-child(3)::before { content: "✕"; }
+[data-os="win"] .win-bar > i:nth-of-type(1)::before { content: "─"; }
+[data-os="win"] .win-bar > i:nth-of-type(2)::before { content: "☐"; font-size: 13px; }
+[data-os="win"] .win-bar > i:nth-of-type(3)::before { content: "✕"; }
 [data-os="win"] .win-bar > i:hover { background: rgba(255, 255, 255, 0.08); color: var(--text); }
-[data-os="win"] .win-bar > i:nth-child(3):hover { background: #c42b1c; color: #fff; }
+[data-os="win"] .win-bar > i:nth-of-type(3):hover { background: #c42b1c; color: #fff; }
 /* Linux (GNOME): title centred, round buttons on the right */
 [data-os="linux"] .win-bar > :not(i) { order: -1; flex: 1; margin-left: 0; text-align: center; }
 [data-os="linux"] .win-bar > i {
   width: 20px; height: 20px; background: rgba(255, 255, 255, 0.09);
   display: grid; place-items: center; font-style: normal; font-size: 10px; color: var(--text);
 }
-[data-os="linux"] .win-bar > i:nth-child(1)::before { content: "−"; }
-[data-os="linux"] .win-bar > i:nth-child(2)::before { content: "□"; font-size: 11px; }
-[data-os="linux"] .win-bar > i:nth-child(3)::before { content: "✕"; }
+[data-os="linux"] .win-bar > i:nth-of-type(1)::before { content: "−"; }
+[data-os="linux"] .win-bar > i:nth-of-type(2)::before { content: "□"; font-size: 11px; }
+[data-os="linux"] .win-bar > i:nth-of-type(3)::before { content: "✕"; }
 [data-os="linux"] .win-bar > i:hover { background: rgba(255, 255, 255, 0.18); }
 /* the project page's tab bar keeps its tabs on the left */
 [data-os="win"] .pp-tabbar > .pp-tabs, [data-os="linux"] .pp-tabbar > .pp-tabs { margin-left: 0; text-align: left; }
 [data-os="linux"] .pp-tabbar { padding-right: 14px; }
+
+/* the terminal on Windows: a Windows Terminal style tab strip, in the site's own colours */
+.term-bar > .wt-tab, .term-bar > .wt-new { display: none; }
+[data-os="win"] .term-bar { padding: 6px 0 0 8px; align-items: flex-end; gap: 2px; background: rgba(0, 0, 0, 0.35); }
+[data-os="win"] .term-bar > .term-title { display: none; }
+[data-os="win"] .term-bar > .wt-tab {
+  display: flex; order: 0; flex: none; align-items: center; gap: 9px; height: 30px; padding: 0 8px 0 12px; min-width: 220px;
+  background: var(--panel); border: 1px solid var(--border); border-bottom: none; border-radius: 8px 8px 0 0;
+  color: var(--text); font-size: 0.75rem; position: relative; top: 1px;
+}
+.wt-ico {
+  width: 15px; height: 15px; border-radius: 4px; display: grid; place-items: center; font-size: 9px; font-weight: 700;
+  color: var(--bg); background: var(--accent); box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.5);
+}
+.wt-title { flex: 1; }
+.wt-x { color: var(--muted); font-size: 10px; padding: 3px 5px; border-radius: 4px; }
+/* + and ⌄ together in one faint rounded box, like Windows Terminal's split new-tab button */
+[data-os="win"] .term-bar > .wt-new {
+  display: flex; order: 0; flex: none; align-items: center; gap: 6px; height: 24px; margin: 0 0 3px 3px; padding: 0 7px 0 8px;
+  background: rgba(255, 255, 255, 0.05); border-radius: 6px; color: var(--muted); transition: background .15s, color .15s;
+}
+[data-os="win"] .term-bar > .wt-new:hover { background: rgba(255, 255, 255, 0.1); color: var(--text); }
+.wt-new .wt-btn { font-size: 15px; line-height: 1; }
+.wt-new .wt-menu { font-size: 11px; position: relative; top: -2px; }
+[data-os="win"] .term-bar > i { order: 1; align-self: flex-start; margin-top: -6px; }
+[data-os="win"] .term-bar > i:first-of-type { margin-left: auto; }
 
 /* ---------- about ---------- */
 .about-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: start; }
