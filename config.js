@@ -171,6 +171,6 @@ window.SITE_CONFIG = {
   contact: {
     email: "you@example.com",
     github: "https://github.com/SanderNF",
-    linkedin: "https://www.linkedin.com/in/your-profile",
+    discord: "https://discord.com/users/612612141924614144",
   },
 };
