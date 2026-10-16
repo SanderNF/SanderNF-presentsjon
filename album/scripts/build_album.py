@@ -83,7 +83,15 @@ def parse_exif(filepath):
         if "Focal Length" in key:
             # exiftool includes "(35 mm equivalent: XXX mm)" — strip it
             val = val.split('(')[0].strip() if '(' in val else val
-            focal_length = val + " mm" if not val.endswith("mm") else val or "unknown"
+            # exiftool returns "100.0 mm" — clean up the ".0" for display
+            if 'mm' in val:
+                # Strip the " mm" part, clean .0, then add back " mm"
+                num = val.replace(" mm", "").rstrip('0').rstrip('.')
+                focal_length = num + " mm"
+            else:
+                # Strip trailing .0 for clean values (e.g., "100.0" -> "100")
+                num = val.rstrip('0').rstrip('.')
+                focal_length = num + " mm" if num else "unknown"
 
         # Date
         if "Date/Time Original" in key:
