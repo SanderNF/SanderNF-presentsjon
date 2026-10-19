@@ -621,7 +621,7 @@ footer { text-align: center; padding: 30px; font-size: 0.75rem; color: var(--mut
 .lb-stage.magnifying { cursor: none; }
 .lb-stage.zoomed { cursor: grab; }
 .lb-stage.dragging { cursor: grabbing; }
-.lightbox img { display: block; margin: 0 auto; max-width: min(70vw, 900px); max-height: 80vh; transform-origin: center; transition: transform .2s ease-out; user-select: none; }
+.lightbox img { display: block; margin: 0 auto; max-width: min(70vw, 900px); max-height: 80vh; transform-origin: center; transition: opacity .4s ease, transform .2s ease-out; user-select: none; }
 .lb-stage.dragging img { transition: none; }
 .lb-zoom { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: var(--muted); }
 .lb-zoom button {

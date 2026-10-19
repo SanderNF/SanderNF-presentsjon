@@ -38,8 +38,8 @@
   function renderFilters() {
     const tags = ["all", ...new Set(photos.flatMap((p) => p.tags || []))];
     $("#filters").innerHTML = tags
-      .map((tag) => `<button class="chip${tag === activeTag ? " on" : ""}" data-tag="${esc(tag)}">#${esc(tag === "all" ? t("album.all") : tag)}</button>`)
-      .join("");
+      .map((tag) => `<button class="chip${tag === activeTag ? " on" : ""}" data-tag="${esc(tag)}">#${esc(tag === "all" ? t("album.all") : tag)}</button>`
+    ).join("");
   }
 
   $("#filters").addEventListener("click", (e) => {
@@ -56,7 +56,7 @@
     $("#gallery").innerHTML = visible
       .map((p, i) => `
         <button class="photo" data-i="${i}" aria-label="Open ${esc(p.title || p.file)}">
-          <img src="${esc(ALBUM_DIR + "photos/" + p.file)}" alt="${esc(p.title || "")}" loading="lazy" />
+          <img src="${esc(ALBUM_DIR + "photos/" + (p.thumbnail || p.file))}" alt="${esc(p.title || "")}" loading="lazy" />
           <span class="photo-info">
             <b>${esc(p.title || p.file)}</b>
             <small>${[p.location, p.date && fmtDate(p.date)].filter(Boolean).map(esc).join(" · ")}</small>
@@ -91,8 +91,33 @@
     current = (i + visible.length) % visible.length;
     const p = visible[current];
     resetZoom(false);
-    $("#lb-img").src = ALBUM_DIR + "photos/" + p.file;
-    $("#lb-img").alt = p.title || "";
+
+    // Two-tier loading: show compressed thumbnail immediately, then swap in full-size
+    const imgEl = $("#lb-img");
+
+    // Phase 1: Load thumbnail first (instant visual)
+    imgEl.src = ALBUM_DIR + "photos/" + (p.thumbnail || p.file);
+    imgEl.alt = p.title || "";
+
+    // Phase 2: Load full-size in background, then fade-swap when ready
+    const fullSrc = ALBUM_DIR + "photos/" + p.file;
+    if (p.thumbnail && fullSrc !== imgEl.src) {
+      const offscreen = new Image();
+      offscreen.onload = () => {
+        // Smooth crossfade: fade out thumbnail, show full-size
+        imgEl.style.transition = "opacity 0.4s ease";
+        imgEl.style.opacity = "0";
+        requestAnimationFrame(() => {
+          imgEl.src = fullSrc;
+          imgEl.style.opacity = "1";
+        });
+      };
+      offscreen.onerror = () => {
+        // If full-size fails, keep the thumbnail — user still sees something
+      };
+      offscreen.src = fullSrc;
+    }
+
     const rows = [
       ["date", p.date && fmtDate(p.date)],
       ["location", p.location],
@@ -111,6 +136,7 @@
       `<small class="lb-pos">[${current + 1}/${visible.length}]</small>`;
     if (lb.hidden) { lastFocus = document.activeElement; lb.hidden = false; document.body.style.overflow = "hidden"; $("#lb-close").focus(); }
   }
+
   function close() {
     lb.hidden = true;
     document.body.style.overflow = "";
@@ -136,7 +162,7 @@
   });
 
   // ---------- zoom & pan ----------
-  const stage = $("#lb-stage"), img = $("#lb-img");
+  const stage = $("#lb-stage"), img = ($("#lb-img"));
   const MIN = 1, MAX = 8;
   let scale = 1, tx = 0, ty = 0;
   const pointers = new Map();
@@ -163,11 +189,13 @@
     });
     $("#lens-level").textContent = `${lensZoom.toFixed(1)}×`;
   }
+
   function showLens(x, y) {
     lensOn = true; lensAt = [x, y];
     lens.hidden = false; stage.classList.add("magnifying");
     drawLens();
   }
+
   function hideLens() {
     lensOn = false;
     lens.hidden = true; stage.classList.remove("magnifying");
@@ -182,6 +210,7 @@
     stage.classList.toggle("zoomed", scale > 1);
     $("#zoom-level").textContent = `${Math.round(scale * 100)}%`;
   }
+
   // zoom to `next`, keeping the point (cx, cy) — relative to the image centre — fixed on screen
   function zoomTo(next, cx = 0, cy = 0) {
     next = Math.max(MIN, Math.min(MAX, next));
@@ -190,13 +219,16 @@
     scale = next;
     apply();
   }
+
   const zoomBy = (f, cx, cy) => zoomTo(scale * f, cx, cy);
+
   function resetZoom(animate = true) {
     if (!animate) img.style.transition = "none";
     scale = 1; tx = ty = 0;
     apply();
     if (!animate) requestAnimationFrame(() => (img.style.transition = ""));
   }
+
   // pointer position relative to the centre of the image's untransformed box
   function rel(x, y) {
     const r = stage.getBoundingClientRect();
@@ -232,6 +264,7 @@
     if (pointers.size === 1 && scale === 1 && e.button === 0) showLens(e.clientX, e.clientY);
     else hideLens();
   });
+
   stage.addEventListener("pointermove", (e) => {
     if (!pointers.has(e.pointerId)) return;
     pointers.set(e.pointerId, [e.clientX, e.clientY]);
@@ -248,6 +281,7 @@
       apply();
     }
   });
+
   function endPointer(e) {
     pointers.delete(e.pointerId);
     hideLens();
@@ -260,6 +294,7 @@
       stage.classList.remove("dragging");
     }
   }
+
   stage.addEventListener("pointerup", endPointer);
   stage.addEventListener("pointercancel", endPointer);
 
@@ -290,8 +325,9 @@
     btn.addEventListener("click", (e) => { if (e.detail === 0) zoomBy(step); });
     btn.addEventListener("contextmenu", (e) => e.preventDefault()); // no long-press menu on touch
   }
+
   holdToZoom($("#zoom-in"), 1.5, 3);
-  holdToZoom($("#zoom-out"), 1 / 1.5, 1 / 3);
+  holdToZoom("#zoom-out", 1 / 1.5, 1 / 3);
   $("#zoom-reset").addEventListener("click", () => resetZoom());
   addEventListener("resize", () => !lb.hidden && apply());
 })();

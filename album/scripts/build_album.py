@@ -4,9 +4,11 @@ Build album.json from photos in ./album/photos/
 Reads ISO, shutter speed, aperture, focal length, date, camera and lens from EXIF.
 For missing values uses "unknown" or "" as appropriate.
 
+Also generates compressed thumbnails and adds a `thumbnail` field to each photo entry.
+
 Usage: python3 build_album.py
 """
-import json, os, subprocess
+import json, os, subprocess, sys
 
 photos_dir = "./album/photos"
 output_file = "./album/album.json"
@@ -112,6 +114,67 @@ def parse_exif(filepath):
     return iso, ss, aperture, focal_length, date, camera, lens
 
 
+def generate_thumbnails():
+    """Generate compressed thumbnails for all photos and add `thumbnail` field to entries."""
+    from PIL import Image
+
+    thumb_dir = os.path.join(photos_dir, "thumbnails")
+    os.makedirs(thumb_dir, exist_ok=True)
+
+    for entry in photo_entries:
+        filename = entry["file"]
+        src_path = os.path.join(photos_dir, filename)
+
+        if not os.path.exists(src_path):
+            print(f"  ⚠ {filename} not found, skipping thumbnail")
+            continue
+
+        # Determine output filename: keep original extension, add -thumb prefix
+        basename = os.path.splitext(filename)[0]
+        ext = os.path.splitext(filename)[1].lower()
+
+        if ext in ('.jpg', '.jpeg'):
+            thumb_ext = '.jpg'
+        else:
+            thumb_ext = ext
+
+        thumb_filename = f"{basename}-thumb{thumb_ext}"
+        thumb_path = os.path.join(thumb_dir, thumb_filename)
+
+        try:
+            with Image.open(src_path) as img:
+                # Convert to RGB if needed (e.g. RGBA -> JPEG, CMYK -> RGB)
+                if img.mode in ('RGBA', 'P'):
+                    bg = Image.new("RGB", img.size, (255, 255, 255))
+                    if img.mode == "P":
+                        img = img.convert("RGBA")
+                    bg.paste(img, mask=img.split()[-1]) if img.mode == "RGBA" else bg.paste(img)
+                    img = bg
+                elif img.mode not in ('RGB', 'L'):
+                    img = img.convert("RGB")
+
+                # Resize to max 600px wide, maintain aspect ratio
+                if img.width > 600:
+                    ratio = 600 / img.width
+                    new_size = (int(img.width * ratio), int(img.height * ratio))
+                    img = img.resize(new_size, Image.LANCZOS)
+
+                # Save as heavily compressed JPEG (~2-4 KB per image, ~10% of original)
+                img.save(
+                    thumb_path,
+                    format="JPEG",
+                    quality=25,
+                    optimize=True,
+                )
+
+            # Add thumbnail path to entry (relative to album/photos/)
+            entry["thumbnail"] = f"thumbnails/{thumb_filename}"
+            print(f"  ✓ {filename:35s} → thumbnails/{thumb_filename}")
+
+        except Exception as e:
+            print(f"  ✗ {filename:35s} thumbnail error: {e}")
+
+
 for filename in new_images:
     filepath = os.path.join(photos_dir, filename)
     print("Processing: " + filename)
@@ -137,6 +200,10 @@ for filename in new_images:
     print("  -> iso=" + iso + ", ss=" + ss + ", apature=" + aperture +
           ", focal-length=" + focal_length + ", date=" + date)
 
+# Generate thumbnails for ALL entries (including original ones with known paths)
+print("\nGenerating compressed thumbnails...")
+generate_thumbnails()
+
 album = {
     "title": "photo_album",
     "description": "Moments, places and things I've seen.",
@@ -146,4 +213,5 @@ album = {
 with open(output_file, "w") as f:
     json.dump(album, f, indent=2, ensure_ascii=False)
 
-print("Done! Total photos: " + str(len(photo_entries)))
+print(f"\nDone! Total photos: {len(photo_entries)}")
+print(f"Saved to {output_file}")

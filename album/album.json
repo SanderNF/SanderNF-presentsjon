@@ -18,7 +18,8 @@
         "sunset",
         "city",
         "landscape"
-      ]
+      ],
+      "thumbnail": "thumbnails/File_SNF-thumb.jpg"
     },
     {
       "file": "IMG_6716.jpg",
@@ -36,7 +37,8 @@
         "landscape",
         "nature",
         "travel"
-      ]
+      ],
+      "thumbnail": "thumbnails/IMG_6716-thumb.jpg"
     },
     {
       "file": "IMG_6721.jpg",
@@ -53,7 +55,8 @@
       "tags": [
         "wildlife",
         "birds"
-      ]
+      ],
+      "thumbnail": "thumbnails/IMG_6721-thumb.jpg"
     },
     {
       "file": "IMG_6994.JPG",
@@ -71,7 +74,8 @@
         "wildlife",
         "birds",
         "water"
-      ]
+      ],
+      "thumbnail": "thumbnails/IMG_6994-thumb.jpg"
     },
     {
       "file": "IMG_7244.jpg",
@@ -89,7 +93,8 @@
         "safari",
         "landscape",
         "travel"
-      ]
+      ],
+      "thumbnail": "thumbnails/IMG_7244-thumb.jpg"
     },
     {
       "file": "IMG_7260.jpg",
@@ -106,7 +111,8 @@
       "tags": [
         "wildlife",
         "birds"
-      ]
+      ],
+      "thumbnail": "thumbnails/IMG_7260-thumb.jpg"
     },
     {
       "file": "IMG_7819.jpg",
@@ -123,7 +129,8 @@
       "tags": [
         "wildlife",
         "birds"
-      ]
+      ],
+      "thumbnail": "thumbnails/IMG_7819-thumb.jpg"
     },
     {
       "file": "IMG_7923.JPG",
@@ -141,7 +148,8 @@
         "wildlife",
         "safari",
         "big cats"
-      ]
+      ],
+      "thumbnail": "thumbnails/IMG_7923-thumb.jpg"
     },
     {
       "file": "IMG_7924.JPG",
@@ -159,7 +167,8 @@
         "wildlife",
         "safari",
         "big cats"
-      ]
+      ],
+      "thumbnail": "thumbnails/IMG_7924-thumb.jpg"
     },
     {
       "file": "IMG_7986.jpg",
@@ -176,7 +185,8 @@
       "tags": [
         "sunset",
         "sky"
-      ]
+      ],
+      "thumbnail": "thumbnails/IMG_7986-thumb.jpg"
     },
     {
       "file": "IMG_8285.JPG",
@@ -193,7 +203,8 @@
       "tags": [
         "wildlife",
         "birds"
-      ]
+      ],
+      "thumbnail": "thumbnails/IMG_8285-thumb.jpg"
     },
     {
       "file": "IMG_8293.JPG",
@@ -210,7 +221,8 @@
       "tags": [
         "wildlife",
         "birds"
-      ]
+      ],
+      "thumbnail": "thumbnails/IMG_8293-thumb.jpg"
     },
     {
       "file": "IMG_8297.jpg",
@@ -228,7 +240,8 @@
         "nature",
         "flowers",
         "water"
-      ]
+      ],
+      "thumbnail": "thumbnails/IMG_8297-thumb.jpg"
     },
     {
       "file": "IMG_8557.jpg",
@@ -246,7 +259,8 @@
         "sunset",
         "water",
         "travel"
-      ]
+      ],
+      "thumbnail": "thumbnails/IMG_8557-thumb.jpg"
     },
     {
       "file": "IMG_8658.jpg",
@@ -264,7 +278,8 @@
         "sunset",
         "water",
         "travel"
-      ]
+      ],
+      "thumbnail": "thumbnails/IMG_8658-thumb.jpg"
     },
     {
       "file": "IMG_5540.jpeg",
@@ -278,7 +293,8 @@
       "location": "",
       "camera": "Canon EOS R50 V",
       "lens": "Sigma 16-300mm F3.5-6.7 DC OS",
-      "tags": []
+      "tags": [],
+      "thumbnail": "thumbnails/IMG_5540-thumb.jpg"
     },
     {
       "file": "IMG_5573.jpeg",
@@ -292,7 +308,8 @@
       "location": "",
       "camera": "Canon EOS R50 V",
       "lens": "Sigma 16-300mm F3.5-6.7 DC OS",
-      "tags": []
+      "tags": [],
+      "thumbnail": "thumbnails/IMG_5573-thumb.jpg"
     },
     {
       "file": "IMG_5689.jpeg",
@@ -306,7 +323,8 @@
       "location": "",
       "camera": "Canon EOS R50 V",
       "lens": "Sigma 16-300mm F3.5-6.7 DC OS",
-      "tags": []
+      "tags": [],
+      "thumbnail": "thumbnails/IMG_5689-thumb.jpg"
     },
     {
       "file": "IMG_5758.jpeg",
@@ -320,7 +338,8 @@
       "location": "",
       "camera": "Canon EOS R50 V",
       "lens": "Sigma 16-300mm F3.5-6.7 DC OS",
-      "tags": []
+      "tags": [],
+      "thumbnail": "thumbnails/IMG_5758-thumb.jpg"
     },
     {
       "file": "IMG_5852.jpeg",
@@ -334,7 +353,8 @@
       "location": "",
       "camera": "Canon EOS R50 V",
       "lens": "Sigma 16-300mm F3.5-6.7 DC OS",
-      "tags": []
+      "tags": [],
+      "thumbnail": "thumbnails/IMG_5852-thumb.jpg"
     },
     {
       "file": "IMG_5862.jpeg",
@@ -348,7 +368,8 @@
       "location": "",
       "camera": "Canon EOS R50 V",
       "lens": "Sigma 16-300mm F3.5-6.7 DC OS",
-      "tags": []
+      "tags": [],
+      "thumbnail": "thumbnails/IMG_5862-thumb.jpg"
     },
     {
       "file": "IMG_5863.jpeg",
@@ -362,7 +383,8 @@
       "location": "",
       "camera": "Canon EOS R50 V",
       "lens": "Sigma 16-300mm F3.5-6.7 DC OS",
-      "tags": []
+      "tags": [],
+      "thumbnail": "thumbnails/IMG_5863-thumb.jpg"
     },
     {
       "file": "IMG_5864.jpeg",
@@ -376,7 +398,8 @@
       "location": "",
       "camera": "Canon EOS R50 V",
       "lens": "Sigma 16-300mm F3.5-6.7 DC OS",
-      "tags": []
+      "tags": [],
+      "thumbnail": "thumbnails/IMG_5864-thumb.jpg"
     },
     {
       "file": "IMG_5866.jpeg",
@@ -390,7 +413,8 @@
       "location": "",
       "camera": "Canon EOS R50 V",
       "lens": "Sigma 16-300mm F3.5-6.7 DC OS",
-      "tags": []
+      "tags": [],
+      "thumbnail": "thumbnails/IMG_5866-thumb.jpg"
     },
     {
       "file": "IMG_5868.jpeg",
@@ -404,7 +428,8 @@
       "location": "",
       "camera": "Canon EOS R50 V",
       "lens": "Sigma 16-300mm F3.5-6.7 DC OS",
-      "tags": []
+      "tags": [],
+      "thumbnail": "thumbnails/IMG_5868-thumb.jpg"
     },
     {
       "file": "IMG_5874.jpeg",
@@ -418,7 +443,8 @@
       "location": "",
       "camera": "Canon EOS R50 V",
       "lens": "Sigma 16-300mm F3.5-6.7 DC OS",
-      "tags": []
+      "tags": [],
+      "thumbnail": "thumbnails/IMG_5874-thumb.jpg"
     },
     {
       "file": "IMG_5877.jpeg",
@@ -432,7 +458,8 @@
       "location": "",
       "camera": "Canon EOS R50 V",
       "lens": "Sigma 16-300mm F3.5-6.7 DC OS",
-      "tags": []
+      "tags": [],
+      "thumbnail": "thumbnails/IMG_5877-thumb.jpg"
     }
   ]
 }
