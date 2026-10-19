@@ -54,14 +54,17 @@
     visible = activeTag === "all" ? photos : photos.filter((p) => (p.tags || []).includes(activeTag));
     $("#count").textContent = t(visible.length === 1 ? "album.count.one" : "album.count", { n: visible.length });
     $("#gallery").innerHTML = visible
-      .map((p, i) => `
-        <button class="photo" data-i="${i}" aria-label="Open ${esc(p.title || p.file)}">
-          <img src="${esc(ALBUM_DIR + "photos/" + (p.thumbnail || p.file))}" alt="${esc(p.title || "")}" loading="lazy" />
-          <span class="photo-info">
-            <b>${esc(p.title || p.file)}</b>
-            <small>${[p.location, p.date && fmtDate(p.date)].filter(Boolean).map(esc).join(" · ")}</small>
-          </span>
-        </button>`)
+      .map((p, i) => {
+        const thumbSrc = ALBUM_DIR + "photos/" + (p.thumbnail || p.file);
+        return `
+          <button class="photo" data-i="${i}" aria-label="Open ${esc(p.title || p.file)}">
+            <img src="${thumbSrc}" alt="${esc(p.title || "")}" loading="lazy" />
+            <span class="photo-info">
+              <b>${esc(p.title || p.file)}</b>
+              <small>${[p.location, p.date && fmtDate(p.date)].filter(Boolean).map(esc).join(" · ")}</small>
+            </span>
+          </button>`
+      })
       .join("");
   }
 
@@ -92,10 +95,10 @@
     const p = visible[current];
     resetZoom(false);
 
-    // Two-tier loading: show compressed thumbnail immediately, then swap in full-size
+    // Two-tier loading: show compressed WebP thumbnail immediately, then swap in full-size
     const imgEl = $("#lb-img");
 
-    // Phase 1: Load thumbnail first (instant visual)
+    // Phase 1: Load thumbnail first (instant visual) — prefers WebP, falls back to JPEG
     imgEl.src = ALBUM_DIR + "photos/" + (p.thumbnail || p.file);
     imgEl.alt = p.title || "";
 
@@ -147,6 +150,7 @@
     const card = e.target.closest(".photo");
     if (card) open(+card.dataset.i);
   });
+
   $("#lb-close").addEventListener("click", close);
   $("#lb-prev").addEventListener("click", () => open(current - 1));
   $("#lb-next").addEventListener("click", () => open(current + 1));
@@ -162,7 +166,7 @@
   });
 
   // ---------- zoom & pan ----------
-  const stage = $("#lb-stage"), img = ($("#lb-img"));
+  const stage = ($("#lb-stage")), img = ($("#lb-img"));
   const MIN = 1, MAX = 8;
   let scale = 1, tx = 0, ty = 0;
   const pointers = new Map();

@@ -4,7 +4,8 @@ Build album.json from photos in ./album/photos/
 Reads ISO, shutter speed, aperture, focal length, date, camera and lens from EXIF.
 For missing values uses "unknown" or "" as appropriate.
 
-Also generates compressed thumbnails and adds a `thumbnail` field to each photo entry.
+Also generates compressed WebP thumbnails (with JPEG fallback) and adds
+`thumbnail` and `fallback` fields to each photo entry.
 
 Usage: python3 build_album.py
 """
@@ -23,7 +24,7 @@ original = [
     {"file": "IMG_7819.jpg", "title": "Little bee-eater", "description": "A little bee-eater resting on a thin branch against a soft, warm background.", "iso": "160", "ss": "1/640 sec", "apature": "f / 7.1", "focal-length": "300 mm", "date": "2026-08-02", "location": "Kenya", "camera": "Canon EOS R50 V", "lens": "Sigma 16-300mm F3.5-6.7 DC OS", "tags": ["wildlife", "birds"]},
     {"file": "IMG_7923.JPG", "title": "Lookout", "description": "A cheetah scanning the savanna from the top of a termite mound.", "iso": "unknown", "ss": "unknown", "apature": "unknown", "focal-length": "unknown", "date": "2026-08-02", "location": "Kenya", "camera": "Canon EOS R50 V", "lens": "Sigma 16-300mm F3.5-6.7 DC OS", "tags": ["wildlife", "safari", "big cats"]},
     {"file": "IMG_7924.JPG", "title": "Eye contact", "description": "The same cheetah turning to look straight into the lens.", "iso": "unknown", "ss": "unknown", "apature": "unknown", "focal-length": "unknown", "date": "2026-08-02", "location": "Kenya", "camera": "Canon EOS R50 V", "lens": "Sigma 16-300mm F3.5-6.7 DC OS", "tags": ["wildlife", "safari", "big cats"]},
-    {"file": "IMG_7986.jpg", "title": "Burning sky", "description": "The sun sinking through smoke and haze, broken up by thin clouds.", "iso": "400", "ss": "1/1250 sec", "apature": "f / 7.1", "focal-length": "300 mm", "date": "2026-08-02", "location": "Kenya", "camera": "Canon EOS R50 V", "lens": "Sigma 16-300mm F3.5-6.7 DC OS", "tags": ["sunset", "sky"]},
+    {"file": "IMG_7986.jpg", "title": "Burning sky", "description": "The sun sinking through smoke and haze, broken up by thin clouds.", "iso": "400", "ss": "1/1250 sec", "apature": "f / 7.1", "focal-length": "262 mm", "date": "2026-08-02", "location": "Kenya", "camera": "Canon EOS R50 V", "lens": "Sigma 16-300mm F3.5-6.7 DC OS", "tags": ["sunset", "sky"]},
     {"file": "IMG_8285.JPG", "title": "Purple sheen", "description": "A Rüppell's starling showing off its iridescent violet feathers in the dry grass.", "iso": "unknown", "ss": "unknown", "apature": "unknown", "focal-length": "unknown", "date": "2026-08-03", "location": "Kenya", "camera": "Canon EOS R50 V", "lens": "Sigma 16-300mm F3.5-6.7 DC OS", "tags": ["wildlife", "birds"]},
     {"file": "IMG_8293.JPG", "title": "Starling pair", "description": "Two Rüppell's starlings foraging together on the grassland.", "iso": "unknown", "ss": "unknown", "apature": "unknown", "focal-length": "unknown", "date": "2026-08-03", "location": "Kenya", "camera": "Canon EOS R50 V", "lens": "Sigma 16-300mm F3.5-6.7 DC OS", "tags": ["wildlife", "birds"]},
     {"file": "IMG_8297.jpg", "title": "Water lilies", "description": "Blue water lilies opening above a pond full of lily pads.", "iso": "100", "ss": "1/400 sec", "apature": "f / 7.1", "focal-length": "248 mm", "date": "2026-08-03", "location": "Kenya", "camera": "Canon EOS R50 V", "lens": "Sigma 16-300mm F3.5-6.7 DC OS", "tags": ["nature", "flowers", "water"]},
@@ -115,7 +116,7 @@ def parse_exif(filepath):
 
 
 def generate_thumbnails():
-    """Generate compressed thumbnails for all photos and add `thumbnail` field to entries."""
+    """Generate compressed WebP thumbnails (with JPEG fallback) for all photos."""
     from PIL import Image
 
     thumb_dir = os.path.join(photos_dir, "thumbnails")
@@ -129,21 +130,17 @@ def generate_thumbnails():
             print(f"  ⚠ {filename} not found, skipping thumbnail")
             continue
 
-        # Determine output filename: keep original extension, add -thumb prefix
+        # Determine output filenames: WebP primary, JPEG fallback
         basename = os.path.splitext(filename)[0]
-        ext = os.path.splitext(filename)[1].lower()
-
-        if ext in ('.jpg', '.jpeg'):
-            thumb_ext = '.jpg'
-        else:
-            thumb_ext = ext
-
-        thumb_filename = f"{basename}-thumb{thumb_ext}"
-        thumb_path = os.path.join(thumb_dir, thumb_filename)
+        
+        # WebP path (primary)
+        webp_path = os.path.join(thumb_dir, f"{basename}-thumb.webp")
+        # JPEG fallback path (for browsers without WebP support)
+        jpg_path = os.path.join(thumb_dir, f"{basename}-thumb.jpg")
 
         try:
             with Image.open(src_path) as img:
-                # Convert to RGB if needed (e.g. RGBA -> JPEG, CMYK -> RGB)
+                # Convert to RGB if needed (e.g. RGBA -> JPEG/WebP)
                 if img.mode in ('RGBA', 'P'):
                     bg = Image.new("RGB", img.size, (255, 255, 255))
                     if img.mode == "P":
@@ -159,17 +156,31 @@ def generate_thumbnails():
                     new_size = (int(img.width * ratio), int(img.height * ratio))
                     img = img.resize(new_size, Image.LANCZOS)
 
-                # Save as heavily compressed JPEG (~2-4 KB per image, ~10% of original)
+                # WebP: quality=25 for very aggressive compression (~10% of original)
                 img.save(
-                    thumb_path,
-                    format="JPEG",
-                    quality=25,
-                    optimize=True,
+                    webp_path,
+                    format="WEBP",
+                    quality=25,          # very low quality for preview only
+                    optimize=True,       # extra compression pass
                 )
 
-            # Add thumbnail path to entry (relative to album/photos/)
-            entry["thumbnail"] = f"thumbnails/{thumb_filename}"
-            print(f"  ✓ {filename:35s} → thumbnails/{thumb_filename}")
+                # JPEG fallback: quality=25 for consistency with WebP
+                img.save(
+                    jpg_path,
+                    format="JPEG",
+                    quality=25,          # same aggressive compression
+                    optimize=True,       # extra compression pass
+                )
+
+            # Add WebP and JPEG fallback paths to entry
+            entry["thumbnail"] = f"thumbnails/{basename}-thumb.webp"
+            entry["fallback"] = f"thumbnails/{basename}-thumb.jpg"
+
+            orig_size = os.path.getsize(src_path) / 1024
+            webp_size = os.path.getsize(webp_path) / 1024
+            jpg_size = os.path.getsize(jpg_path) / 1024
+            orig_mb = orig_size / 1024
+            print(f"  ✓ {filename:35s}  {orig_mb:8.2f} MB → WebP:{webp_size:6.1f} KB ({orig_mb*1024/webp_size:.0f}×), JPEG:{jpg_size:6.1f} KB")
 
         except Exception as e:
             print(f"  ✗ {filename:35s} thumbnail error: {e}")
@@ -200,8 +211,8 @@ for filename in new_images:
     print("  -> iso=" + iso + ", ss=" + ss + ", apature=" + aperture +
           ", focal-length=" + focal_length + ", date=" + date)
 
-# Generate thumbnails for ALL entries (including original ones with known paths)
-print("\nGenerating compressed thumbnails...")
+# Generate WebP thumbnails (with JPEG fallback) for ALL entries
+print("\nGenerating compressed WebP thumbnails (with JPEG fallback)...")
 generate_thumbnails()
 
 album = {

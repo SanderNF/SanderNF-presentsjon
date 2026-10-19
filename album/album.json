@@ -19,7 +19,8 @@
         "city",
         "landscape"
       ],
-      "thumbnail": "thumbnails/File_SNF-thumb.jpg"
+      "thumbnail": "thumbnails/File_SNF-thumb.webp",
+      "fallback": "thumbnails/File_SNF-thumb.jpg"
     },
     {
       "file": "IMG_6716.jpg",
@@ -38,7 +39,8 @@
         "nature",
         "travel"
       ],
-      "thumbnail": "thumbnails/IMG_6716-thumb.jpg"
+      "thumbnail": "thumbnails/IMG_6716-thumb.webp",
+      "fallback": "thumbnails/IMG_6716-thumb.jpg"
     },
     {
       "file": "IMG_6721.jpg",
@@ -56,7 +58,8 @@
         "wildlife",
         "birds"
       ],
-      "thumbnail": "thumbnails/IMG_6721-thumb.jpg"
+      "thumbnail": "thumbnails/IMG_6721-thumb.webp",
+      "fallback": "thumbnails/IMG_6721-thumb.jpg"
     },
     {
       "file": "IMG_6994.JPG",
@@ -75,7 +78,8 @@
         "birds",
         "water"
       ],
-      "thumbnail": "thumbnails/IMG_6994-thumb.jpg"
+      "thumbnail": "thumbnails/IMG_6994-thumb.webp",
+      "fallback": "thumbnails/IMG_6994-thumb.jpg"
     },
     {
       "file": "IMG_7244.jpg",
@@ -94,7 +98,8 @@
         "landscape",
         "travel"
       ],
-      "thumbnail": "thumbnails/IMG_7244-thumb.jpg"
+      "thumbnail": "thumbnails/IMG_7244-thumb.webp",
+      "fallback": "thumbnails/IMG_7244-thumb.jpg"
     },
     {
       "file": "IMG_7260.jpg",
@@ -112,7 +117,8 @@
         "wildlife",
         "birds"
       ],
-      "thumbnail": "thumbnails/IMG_7260-thumb.jpg"
+      "thumbnail": "thumbnails/IMG_7260-thumb.webp",
+      "fallback": "thumbnails/IMG_7260-thumb.jpg"
     },
     {
       "file": "IMG_7819.jpg",
@@ -130,7 +136,8 @@
         "wildlife",
         "birds"
       ],
-      "thumbnail": "thumbnails/IMG_7819-thumb.jpg"
+      "thumbnail": "thumbnails/IMG_7819-thumb.webp",
+      "fallback": "thumbnails/IMG_7819-thumb.jpg"
     },
     {
       "file": "IMG_7923.JPG",
@@ -149,7 +156,8 @@
         "safari",
         "big cats"
       ],
-      "thumbnail": "thumbnails/IMG_7923-thumb.jpg"
+      "thumbnail": "thumbnails/IMG_7923-thumb.webp",
+      "fallback": "thumbnails/IMG_7923-thumb.jpg"
     },
     {
       "file": "IMG_7924.JPG",
@@ -168,7 +176,8 @@
         "safari",
         "big cats"
       ],
-      "thumbnail": "thumbnails/IMG_7924-thumb.jpg"
+      "thumbnail": "thumbnails/IMG_7924-thumb.webp",
+      "fallback": "thumbnails/IMG_7924-thumb.jpg"
     },
     {
       "file": "IMG_7986.jpg",
@@ -177,7 +186,7 @@
       "iso": "400",
       "ss": "1/1250 sec",
       "apature": "f / 7.1",
-      "focal-length": "300 mm",
+      "focal-length": "262 mm",
       "date": "2026-08-02",
       "location": "Kenya",
       "camera": "Canon EOS R50 V",
@@ -186,7 +195,8 @@
         "sunset",
         "sky"
       ],
-      "thumbnail": "thumbnails/IMG_7986-thumb.jpg"
+      "thumbnail": "thumbnails/IMG_7986-thumb.webp",
+      "fallback": "thumbnails/IMG_7986-thumb.jpg"
     },
     {
       "file": "IMG_8285.JPG",
@@ -204,7 +214,8 @@
         "wildlife",
         "birds"
       ],
-      "thumbnail": "thumbnails/IMG_8285-thumb.jpg"
+      "thumbnail": "thumbnails/IMG_8285-thumb.webp",
+      "fallback": "thumbnails/IMG_8285-thumb.jpg"
     },
     {
       "file": "IMG_8293.JPG",
@@ -222,7 +233,8 @@
         "wildlife",
         "birds"
       ],
-      "thumbnail": "thumbnails/IMG_8293-thumb.jpg"
+      "thumbnail": "thumbnails/IMG_8293-thumb.webp",
+      "fallback": "thumbnails/IMG_8293-thumb.jpg"
     },
     {
       "file": "IMG_8297.jpg",
@@ -241,7 +253,8 @@
         "flowers",
         "water"
       ],
-      "thumbnail": "thumbnails/IMG_8297-thumb.jpg"
+      "thumbnail": "thumbnails/IMG_8297-thumb.webp",
+      "fallback": "thumbnails/IMG_8297-thumb.jpg"
     },
     {
       "file": "IMG_8557.jpg",
@@ -260,7 +273,8 @@
         "water",
         "travel"
       ],
-      "thumbnail": "thumbnails/IMG_8557-thumb.jpg"
+      "thumbnail": "thumbnails/IMG_8557-thumb.webp",
+      "fallback": "thumbnails/IMG_8557-thumb.jpg"
     },
     {
       "file": "IMG_8658.jpg",
@@ -279,7 +293,8 @@
         "water",
         "travel"
       ],
-      "thumbnail": "thumbnails/IMG_8658-thumb.jpg"
+      "thumbnail": "thumbnails/IMG_8658-thumb.webp",
+      "fallback": "thumbnails/IMG_8658-thumb.jpg"
     },
     {
       "file": "IMG_5540.jpeg",
@@ -294,7 +309,8 @@
       "camera": "Canon EOS R50 V",
       "lens": "Sigma 16-300mm F3.5-6.7 DC OS",
       "tags": [],
-      "thumbnail": "thumbnails/IMG_5540-thumb.jpg"
+      "thumbnail": "thumbnails/IMG_5540-thumb.webp",
+      "fallback": "thumbnails/IMG_5540-thumb.jpg"
     },
     {
       "file": "IMG_5573.jpeg",
@@ -309,7 +325,8 @@
       "camera": "Canon EOS R50 V",
       "lens": "Sigma 16-300mm F3.5-6.7 DC OS",
       "tags": [],
-      "thumbnail": "thumbnails/IMG_5573-thumb.jpg"
+      "thumbnail": "thumbnails/IMG_5573-thumb.webp",
+      "fallback": "thumbnails/IMG_5573-thumb.jpg"
     },
     {
       "file": "IMG_5689.jpeg",
@@ -324,7 +341,8 @@
       "camera": "Canon EOS R50 V",
       "lens": "Sigma 16-300mm F3.5-6.7 DC OS",
       "tags": [],
-      "thumbnail": "thumbnails/IMG_5689-thumb.jpg"
+      "thumbnail": "thumbnails/IMG_5689-thumb.webp",
+      "fallback": "thumbnails/IMG_5689-thumb.jpg"
     },
     {
       "file": "IMG_5758.jpeg",
@@ -339,7 +357,8 @@
       "camera": "Canon EOS R50 V",
       "lens": "Sigma 16-300mm F3.5-6.7 DC OS",
       "tags": [],
-      "thumbnail": "thumbnails/IMG_5758-thumb.jpg"
+      "thumbnail": "thumbnails/IMG_5758-thumb.webp",
+      "fallback": "thumbnails/IMG_5758-thumb.jpg"
     },
     {
       "file": "IMG_5852.jpeg",
@@ -354,7 +373,8 @@
       "camera": "Canon EOS R50 V",
       "lens": "Sigma 16-300mm F3.5-6.7 DC OS",
       "tags": [],
-      "thumbnail": "thumbnails/IMG_5852-thumb.jpg"
+      "thumbnail": "thumbnails/IMG_5852-thumb.webp",
+      "fallback": "thumbnails/IMG_5852-thumb.jpg"
     },
     {
       "file": "IMG_5862.jpeg",
@@ -369,7 +389,8 @@
       "camera": "Canon EOS R50 V",
       "lens": "Sigma 16-300mm F3.5-6.7 DC OS",
       "tags": [],
-      "thumbnail": "thumbnails/IMG_5862-thumb.jpg"
+      "thumbnail": "thumbnails/IMG_5862-thumb.webp",
+      "fallback": "thumbnails/IMG_5862-thumb.jpg"
     },
     {
       "file": "IMG_5863.jpeg",
@@ -384,7 +405,8 @@
       "camera": "Canon EOS R50 V",
       "lens": "Sigma 16-300mm F3.5-6.7 DC OS",
       "tags": [],
-      "thumbnail": "thumbnails/IMG_5863-thumb.jpg"
+      "thumbnail": "thumbnails/IMG_5863-thumb.webp",
+      "fallback": "thumbnails/IMG_5863-thumb.jpg"
     },
     {
       "file": "IMG_5864.jpeg",
@@ -399,7 +421,8 @@
       "camera": "Canon EOS R50 V",
       "lens": "Sigma 16-300mm F3.5-6.7 DC OS",
       "tags": [],
-      "thumbnail": "thumbnails/IMG_5864-thumb.jpg"
+      "thumbnail": "thumbnails/IMG_5864-thumb.webp",
+      "fallback": "thumbnails/IMG_5864-thumb.jpg"
     },
     {
       "file": "IMG_5866.jpeg",
@@ -414,7 +437,8 @@
       "camera": "Canon EOS R50 V",
       "lens": "Sigma 16-300mm F3.5-6.7 DC OS",
       "tags": [],
-      "thumbnail": "thumbnails/IMG_5866-thumb.jpg"
+      "thumbnail": "thumbnails/IMG_5866-thumb.webp",
+      "fallback": "thumbnails/IMG_5866-thumb.jpg"
     },
     {
       "file": "IMG_5868.jpeg",
@@ -429,7 +453,8 @@
       "camera": "Canon EOS R50 V",
       "lens": "Sigma 16-300mm F3.5-6.7 DC OS",
       "tags": [],
-      "thumbnail": "thumbnails/IMG_5868-thumb.jpg"
+      "thumbnail": "thumbnails/IMG_5868-thumb.webp",
+      "fallback": "thumbnails/IMG_5868-thumb.jpg"
     },
     {
       "file": "IMG_5874.jpeg",
@@ -444,7 +469,8 @@
       "camera": "Canon EOS R50 V",
       "lens": "Sigma 16-300mm F3.5-6.7 DC OS",
       "tags": [],
-      "thumbnail": "thumbnails/IMG_5874-thumb.jpg"
+      "thumbnail": "thumbnails/IMG_5874-thumb.webp",
+      "fallback": "thumbnails/IMG_5874-thumb.jpg"
     },
     {
       "file": "IMG_5877.jpeg",
@@ -459,7 +485,8 @@
       "camera": "Canon EOS R50 V",
       "lens": "Sigma 16-300mm F3.5-6.7 DC OS",
       "tags": [],
-      "thumbnail": "thumbnails/IMG_5877-thumb.jpg"
+      "thumbnail": "thumbnails/IMG_5877-thumb.webp",
+      "fallback": "thumbnails/IMG_5877-thumb.jpg"
     }
   ]
 }
