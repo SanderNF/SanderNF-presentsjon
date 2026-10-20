@@ -487,6 +487,28 @@
       "tags": [],
       "thumbnail": "thumbnails/IMG_5877-thumb.webp",
       "fallback": "thumbnails/IMG_5877-thumb.jpg"
+    },
+    {
+      "file": "IMG_9053.jpg",
+      "title": "Neon tower",
+      "description": "The tower at Jernbanetorget at night time with a shutter zoom technique for that faint outline effect",
+      "iso": "200",
+      "ss": "1\" sec",
+      "apature": "f / 20",
+      "focal-length": "27 mm",
+      "date": "2026-10-16",
+      "location": "Jernbanetorget / Oslo / Norway",
+      "camera": "Canon EOS R50 V",
+      "lens": "16-300mm F3.5-6.7 DC OS",
+      "tags": [
+        "city",
+        "night",
+        "neon",
+        "shutter-zoom",
+        "long-exposure"
+      ],
+      "thumbnail": "thumbnails/IMG_9053-thumb.webp",
+      "fallback": "thumbnails/IMG_9053-thumb.jpg"
     }
   ]
 }
