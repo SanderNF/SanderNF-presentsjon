@@ -169,7 +169,7 @@ window.SITE_CONFIG = {
     },
   ],
   contact: {
-    email: "you@example.com",
+    email: "sandernf+ref-minside@outlook.com",
     github: "https://github.com/SanderNF",
     discord: "https://discord.com/users/612612141924614144",
   },
