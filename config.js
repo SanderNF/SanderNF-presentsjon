@@ -159,12 +159,14 @@ window.SITE_CONFIG = {
       period: "2024 — 2028",
       title: { en: "Information Technology and Media Production", no: "Informasjonsteknologi og medieproduksjon" },
       place: "Kuben VGS",
+      school: true, // graduation cap icon instead of the briefcase
       text: { en: "Upper secondary school.", no: "Videregående skole." },
     },
     {
       period: "2020 — 2024",
       title: { en: "Lower secondary school", no: "Ungdomsskole" },
       place: "Morellbakken ungdomsskole",
+      school: true,
       text: { en: "With programming as an elective.", no: "Med programmering som valgfag." },
     },
   ],

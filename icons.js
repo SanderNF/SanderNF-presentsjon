@@ -1,4 +1,36 @@
-// Shared inline SVG icons (they take the text colour via currentColor)
+// Nerd Font icons, served from assets/fonts/snf-icons.woff2 ("SNF Icons" in style.css).
+// That font only holds the icons the site uses: after adding one here, re-run assets/fonts/build_fonts.py.
+// Look up codepoints at https://www.nerdfonts.com/cheat-sheet
 window.SNF_ICONS = {
-  github: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>',
+  lua: "", javascript: "", node: "", python: "", sql: "",
+  go: "󰟓", rust: "", cpp: "", html: "", css: "",
+  docker: "", k8s: "", proxmox: "", api: "󱂛",
+  github: "", githubActions: "", git: "󰊢",
+  commit: "", pr: "", star: "", issue: "", contrib: "󱇯", warning: "", nuke: "",
+  jira: "", figma: "", confluence: "",
+  snowflake: "", streamlit: "", jupyter: "󱓧",
+  code: "", markdown: "", translate: "󰗊",
+  email: "󱡯", discord: "", arch: "󰣇", linux: "", apple: "󰀶",
+  terminal: "",
+  photos: "󰣌", camera: "", cameraLocation: "󱦨", aperture: "󰄄", shutter: "󰭪", iso: "󱝊", focal: "󰄄",
+  pdf: "", mapMarker: "󰍎", link: "", web: "󰖟", wifi: "󱛆",
+  ethernet: "󰈀", networkSwitch: "", remoteDesktop: "󰢹",
+  briefcase: "󱒕", graduation: "", robot: "󱚣", record: "󰑋",
+  pihole: "󰷱", minecraft: "󰍳",
+  date: "󱛡",
 };
+
+// <i class="ico">…</i> for an icon by name; empty for an unknown name
+window.SNF_ICON = (name) => (window.SNF_ICONS[name] ? `<i class="ico" aria-hidden="true">${window.SNF_ICONS[name]}</i>` : "");
+
+// icons for a skill or tech tag from config.js, matched on its name
+const SKILL_ICONS = [
+  [/^lua\b/i, "lua"], [/^javascript/i, "javascript"], [/^node/i, "node"], [/^python/i, "python"], [/^sql\b/i, "sql"],
+  [/^go\b/i, "go"], [/^rust\b/i, "rust"], [/^c\+\+/i, "cpp"], [/^html/i, "html"], [/css\b/i, "css"], [/^rest\b/i, "api"],
+  [/^docker/i, "docker"], [/^kubernetes|^k8s/i, "k8s"], [/^github actions/i, "githubActions"], [/^proxmox/i, "proxmox"],
+  [/^snowflake/i, "snowflake"], [/^streamlit/i, "streamlit"], [/^jupyter/i, "jupyter"],
+  [/^git$/i, "git"], [/^linux/i, "arch"], [/^jira/i, "jira"], [/^confluence/i, "confluence"], [/^figma/i, "figma"],
+  [/^ai$/i, "robot"], [/^http/i, "web"], [/^obs\b/i, "record"], [/^networking/i, "ethernet"], [/^pikvm/i, "remoteDesktop"],
+  [/^unifi|^cisco/i, "networkSwitch"],
+];
+window.SNF_SKILL_ICONS = (skill) => SKILL_ICONS.filter(([re]) => re.test(skill)).map(([, name]) => window.SNF_ICON(name)).join("");

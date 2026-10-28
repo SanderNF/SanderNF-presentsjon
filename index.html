@@ -6,9 +6,7 @@
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
   <title>Sander NF — Developer</title>
   <meta name="description" content="Personal portfolio" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;800&family=Orbitron:wght@600;800&display=swap" rel="stylesheet" />
+  <link rel="preload" href="assets/fonts/profont-regular.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="style.css?v=202610151540" />
   <script src="theme.js?v=202610151540"></script>
   <script>
@@ -32,7 +30,7 @@
       <a href="#experience"><span class="num">04.</span><span data-i18n="nav.experience">experience</span></a>
       <a href="#terminal"><span class="num">05.</span><span data-i18n="nav.terminal">terminal</span></a>
       <a href="#contact"><span class="num">06.</span><span data-i18n="nav.contact">contact</span></a>
-      <a href="album.html" class="nav-ext"><span class="num">07.</span><span data-i18n="nav.album">photo album</span></a>
+      <a href="album.html" class="nav-ext"><span class="num">07.</span><i class="ico" aria-hidden="true">&#xf08cc;</i><span data-i18n="nav.album">photo album</span></a>
     </nav>
   </header>
 
@@ -41,7 +39,7 @@
     <section id="home" class="hero">
       <p class="boot" id="boot"></p>
       <h1 class="glitch"></h1>
-      <p class="role">&gt; <span data-bind="role"></span> @ <span data-bind="location"></span></p>
+      <p class="role">&gt; <span data-bind="role"></span> @ <i class="ico" aria-hidden="true">&#xf034e;</i><span data-bind="location"></span></p>
       <p class="typed"><span id="typed"></span><span class="caret">█</span></p>
       <div class="hero-cta">
         <a href="#projects" class="btn" data-i18n="hero.projects">./view_projects</a>
@@ -90,7 +88,7 @@
       <div class="term" id="term">
         <div class="win-bar term-bar"><i></i><i></i><i></i><span class="term-title">guest@<span data-bind="handle"></span>: ~</span><!--
           Windows only: a Windows Terminal style tab strip (see [data-os="win"] .term-bar in style.css)
-          --><div class="wt-tab"><span class="wt-ico" aria-hidden="true">&gt;_</span><span class="wt-title">guest@<span data-bind="handle"></span>: ~</span><span class="wt-x" aria-hidden="true">✕</span></div><span class="wt-new" aria-hidden="true"><span class="wt-btn">+</span><span class="wt-btn wt-menu">⌄</span></span></div>
+          --><div class="wt-tab"><span class="wt-ico" aria-hidden="true">&#xf120;</span><span class="wt-title">guest@<span data-bind="handle"></span>: ~</span><span class="wt-x" aria-hidden="true">✕</span></div><span class="wt-new" aria-hidden="true"><span class="wt-btn">+</span><span class="wt-btn wt-menu">⌄</span></span></div>
         <div class="term-body" id="term-body">
           <div id="term-out"></div>
           <form id="term-form" class="term-line">
@@ -111,7 +109,7 @@
   </main>
 
   <footer>
-    <p>&copy; <span id="year"></span> <span data-bind="name"></span> — <span data-i18n="footer">built with &lt;3 on OSX</span></p>
+    <p><i class="ico" aria-hidden="true">&#xf1f9;</i> <span id="year"></span> <span data-bind="name"></span> — <span data-i18n="footer">built with &lt;3 on</span> OSX <i class="ico" aria-hidden="true">&#xf0036;</i></p>
   </footer>
 
   <script src="config.js?v=202610151540"></script>

@@ -46,7 +46,7 @@
       // diagram colours follow the site's accents (flag preset)
       const cs = getComputedStyle(document.documentElement), css = (v) => cs.getPropertyValue(v).trim();
       window.mermaid.initialize({
-        startOnLoad: false, theme: "base", fontFamily: "JetBrains Mono, monospace",
+        startOnLoad: false, theme: "base", fontFamily: "Roboto Mono, SNF Icons, monospace",
         themeVariables: {
           background: "#05070d", primaryColor: "#0a1424", primaryTextColor: "#c9d6e8", primaryBorderColor: css("--accent") || "#00ffa3",
           lineColor: css("--accent-2") || "#00d4ff", secondaryColor: "#0a0f1c", tertiaryColor: "#0a0f1c", clusterBkg: `rgba(${css("--accent-rgb") || "0, 255, 163"}, 0.04)`,
@@ -92,8 +92,8 @@
           <p class="pp-lead">${esc(L(p.description))}</p>
           ${L(p.details || []).map((d) => `<p>${esc(d)}</p>`).join("")}
           <h4>${esc(tr("pp.tech"))}</h4>
-          <div class="tags">${p.tech.map((t) => `<span>${esc(t)}</span>`).join("")}</div>
-          ${p.link ? `<h4>${esc(tr("pp.source"))}</h4><p><a href="${esc(p.link)}" target="_blank" rel="noopener">${esc(p.link)} ↗</a></p>` : ""}`,
+          <div class="tags">${p.tech.map((t) => `<span>${window.SNF_SKILL_ICONS(t)}${esc(t)}</span>`).join("")}</div>
+          ${p.link ? `<h4>${esc(tr("pp.source"))}</h4><p><a href="${esc(p.link)}" target="_blank" rel="noopener">${window.SNF_ICON("link")}${esc(p.link)} ↗</a></p>` : ""}`,
       },
     ];
     for (const f of p.files || []) tabs.push({
@@ -112,13 +112,13 @@
       <div class="pp-info">
         ${p.period ? `<span>[${esc(L(p.period))}]</span>` : ""}
         ${exp ? `<span>@ ${esc(exp.place)}</span>` : ""}
-        ${p.link ? `<a href="${esc(p.link)}" target="_blank" rel="noopener">github ↗</a>` : ""}
+        ${p.link ? `<a href="${esc(p.link)}" target="_blank" rel="noopener">${window.SNF_ICON("github")}github ↗</a>` : ""}
       </div>
       <div class="code-card pp-window">
         <div class="win-bar pp-tabbar">
           <i></i><i></i><i></i>
           <div class="pp-tabs" role="tablist" aria-label="${esc(tr("pp.files"))}">
-            ${tabs.map((t) => `<button role="tab" id="tab-${t.id}" aria-controls="panel-${t.id}" data-tab="${t.id}">${esc(t.label)}</button>`).join("")}
+            ${tabs.map((t) => `<button role="tab" id="tab-${t.id}" aria-controls="panel-${t.id}" data-tab="${t.id}">${window.SNF_ICON("markdown")}${esc(t.label)}</button>`).join("")}
           </div>
         </div>
         ${tabs.map((t) => `<div class="pp-panel${t.file ? " md" : ""}" role="tabpanel" id="panel-${t.id}" aria-labelledby="tab-${t.id}" tabindex="0" hidden>${t.html}</div>`).join("")}

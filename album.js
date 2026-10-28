@@ -121,20 +121,21 @@
       offscreen.src = fullSrc;
     }
 
+    // [label, value, icon]
     const rows = [
-      ["date", p.date && fmtDate(p.date)],
-      ["location", p.location],
-      ["camera", p.camera],
-      ["lens", p.lens],
-      ["focal", p["focal-length"]],
-      ["aperture", p.apature || p.aperture],
-      ["shutter", p.ss],
-      ["iso", p.iso],
+      ["date", p.date && fmtDate(p.date), "date"],
+      ["location", p.location, "cameraLocation"],
+      ["camera", p.camera, "camera"],
+      ["lens", p.lens, "aperture"],
+      ["focal", p["focal-length"], "focal"],
+      ["aperture", p.apature || p.aperture, "aperture"],
+      ["shutter", p.ss, "shutter"],
+      ["iso", p.iso, "iso"],
     ].filter(([, v]) => v && v !== "unknown");
     $("#lb-meta").innerHTML =
       `<h3>${esc(p.title || p.file)}</h3>` +
       (p.description ? `<p>${esc(p.description)}</p>` : "") +
-      (rows.length ? `<dl>${rows.map(([k, v]) => `<dt>${esc(t("meta." + k))}</dt><dd>${esc(v)}</dd>`).join("")}</dl>` : "") +
+      (rows.length ? `<dl>${rows.map(([k, v, icon]) => `<dt><span class="dt-ico">${window.SNF_ICON(icon)}</span>${esc(t("meta." + k))}</dt><dd>${esc(v)}</dd>`).join("")}</dl>` : "") +
       (p.tags?.length ? `<div class="tags">${p.tags.map((t) => `<span>#${esc(t)}</span>`).join("")}</div>` : "") +
       `<small class="lb-pos">[${current + 1}/${visible.length}]</small>`;
     if (lb.hidden) { lastFocus = document.activeElement; lb.hidden = false; document.body.style.overflow = "hidden"; $("#lb-close").focus(); }

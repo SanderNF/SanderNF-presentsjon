@@ -6,9 +6,7 @@
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
   <title>Photo Album</title>
   <meta name="description" content="Photo album" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;800&family=Orbitron:wght@600;800&display=swap" rel="stylesheet" />
+  <link rel="preload" href="assets/fonts/profont-regular.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="style.css?v=202610151540" />
   <script src="theme.js?v=202610151540"></script>
 </head>
@@ -67,11 +65,12 @@
   </div>
 
   <footer>
-    <p>&copy; <span id="year"></span> <span data-bind="name"></span></p>
+    <p><i class="ico" aria-hidden="true">&#xf1f9;</i> <span id="year"></span> <span data-bind="name"></span></p>
   </footer>
 
   <script src="config.js?v=202610151540"></script>
   <script src="i18n.js?v=202610151540"></script>
+  <script src="icons.js?v=202610151540"></script>
   <script src="album.js?v=202610151540"></script>
   <script src="hex.js?v=202610151540"></script>
   <script src="nav.js?v=202610151540"></script>

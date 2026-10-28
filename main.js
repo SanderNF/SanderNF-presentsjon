@@ -13,8 +13,8 @@
   heading.setAttribute("aria-label", C.name);
   heading.dataset.text = C.name;
 
-  // where each kind of letter sits in the line box (measured for Orbitron, % of line height)
-  const GLYPH_RANGE = { cap: [16.9, 86.8], tall: [12.7, 86.8], x: [30.7, 86.8], desc: [30.7, 100.5] };
+  // where each kind of letter sits in the line box (measured for Ubuntu Bold at line-height 1.1, % of line height)
+  const GLYPH_RANGE = { cap: [20.8, 83.8], tall: [13.2, 83.8], x: [36.0, 83.8], desc: [36.0, 100.9] };
   function stripes(colors, [top, bottom]) {
     const step = (bottom - top) / colors.length;
     const at = (i) => `${(top + step * i).toFixed(1)}%`;
@@ -86,12 +86,12 @@
 
     // ---------- skills ----------
     $("#skills-grid").innerHTML = Object.entries(C.skills)
-      .map(([group, items]) => `<div class="skill-group"><h3>// ${esc(t("skill." + group, {}, L(group)))}</h3><ul>${items.map((i) => `<li>${esc(i)}</li>`).join("")}</ul></div>`)
+      .map(([group, items]) => `<div class="skill-group"><h3>// ${esc(t("skill." + group, {}, L(group)))}</h3><ul>${items.map((i) => `<li>${window.SNF_SKILL_ICONS(i)}${esc(i)}</li>`).join("")}</ul></div>`)
       .join("");
 
     // ---------- projects ----------
     // the card's link button shows the icon of the site it points to
-    const ICONS = { "github.com": ["GitHub", window.SNF_ICONS.github] };
+    const ICONS = { "github.com": ["GitHub", window.SNF_ICON("github")] };
     function linkButton(p) {
       let host = "";
       try { host = new URL(p.link).hostname.replace(/^www\./, ""); } catch {}
@@ -103,10 +103,10 @@
     $("#projects-grid").innerHTML = C.projects
       .map((p) => `
         <article class="project">
-          <div class="top"><span>&lt;/&gt;</span>${p.link ? linkButton(p) : ""}</div>
+          <div class="top">${window.SNF_ICON("code")}${p.link ? linkButton(p) : ""}</div>
           <h3><a class="open" href="project.html?p=${encodeURIComponent(p.name)}">${esc(p.name)}</a></h3>
           <p>${esc(L(p.description))}</p>
-          <div class="tags">${p.tech.map((t) => `<span>${esc(t)}</span>`).join("")}</div>
+          <div class="tags">${p.tech.map((t) => `<span>${window.SNF_SKILL_ICONS(t)}${esc(t)}</span>`).join("")}</div>
           <span class="more">./open --details${p.report ? " --report" : ""} →</span>
         </article>`)
       .join("");
@@ -119,13 +119,13 @@
         <div class="ref-body">${r.sections.map((s) => `${s.heading ? `<h4>${esc(s.heading)}</h4>` : ""}${s.text.split("\n").map((t) => `<p>${esc(t)}</p>`).join("")}`).join("")}</div>
       </details>`;
     $("#timeline").innerHTML = C.experience
-      .map((e) => `<li><div class="period">[${esc(L(e.period))}]</div><h3>${esc(L(e.title))}</h3><div class="place">@ ${esc(e.place)}</div><p>${esc(L(e.text))}</p>${reference(e.reference)}</li>`)
+      .map((e) => `<li><div class="period">[${esc(L(e.period))}]</div><h3>${esc(L(e.title))}</h3><div class="place">${window.SNF_ICON(e.school ? "graduation" : "briefcase")}${esc(e.place)}</div><p>${esc(L(e.text))}</p>${reference(e.reference)}</li>`)
       .join("");
 
     // ---------- contact ----------
     $("#email-btn").href = `mailto:${C.contact.email}`;
     $("#links").innerHTML = Object.entries(C.contact)
-      .map(([k, v]) => `<a href="${esc(k === "email" ? "mailto:" + v : v)}" target="_blank" rel="noopener">${esc(k)}</a>`)
+      .map(([k, v]) => `<a href="${esc(k === "email" ? "mailto:" + v : v)}" target="_blank" rel="noopener">${window.SNF_ICON(k)}${esc(k)}</a>`)
       .join("");
   }
   render();

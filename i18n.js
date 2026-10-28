@@ -17,7 +17,7 @@ window.I18N = (() => {
       "about.comment": "// who am i?",
       "contact.text": "My inbox is always open. Whether you have a question, a project or just want to say hi — ping me.",
       "contact.btn": "> send_message()",
-      "footer": "built with <3 on OSX",
+      "footer": "built with <3 on",
       "link.view": "View {name} on {site}",
       "skill.languages": "languages", "skill.tools": "tools", "skill.data & ai": "data & ai",
       "gh.stats": "My GitHub stats", "gh.langs": "Most used languages",
@@ -43,7 +43,7 @@ window.I18N = (() => {
       "about.comment": "// hvem er jeg?",
       "contact.text": "Innboksen min er alltid åpen. Enten du har et spørsmål, et prosjekt eller bare vil si hei — send meg en melding.",
       "contact.btn": "> send_melding()",
-      "footer": "laget med <3 på OSX",
+      "footer": "laget med <3 på",
       "link.view": "Se {name} på {site}",
       "skill.languages": "språk", "skill.tools": "verktøy", "skill.data & ai": "data & KI",
       "gh.stats": "Min GitHub-statistikk", "gh.langs": "Mest brukte språk",
@@ -103,14 +103,14 @@ window.I18N = (() => {
     return true;
   }
 
-  // language picker: a globe dropdown in the top bar, and a row of buttons inside the hamburger menu
-  const GLOBE = '<svg viewBox="0 -960 960 960" aria-hidden="true"><path fill="currentColor" d="M325-111.5q-73-31.5-127.5-86t-86-127.5Q80-398 80-480.5t31.5-155q31.5-72.5 86-127t127.5-86Q398-880 480.5-880t155 31.5q72.5 31.5 127 86t86 127Q880-563 880-480.5T848.5-325q-31.5 73-86 127.5t-127 86Q563-80 480.5-80T325-111.5ZM480-162q26-36 45-75t31-83H404q12 44 31 83t45 75Zm-104-16q-18-33-31.5-68.5T322-320H204q29 50 72.5 87t99.5 55Zm208 0q56-18 99.5-55t72.5-87H638q-9 38-22.5 73.5T584-178ZM170-400h136q-3-20-4.5-39.5T300-480q0-21 1.5-40.5T306-560H170q-5 20-7.5 39.5T160-480q0 21 2.5 40.5T170-400Zm216 0h188q3-20 4.5-39.5T580-480q0-21-1.5-40.5T574-560H386q-3 20-4.5 39.5T380-480q0 21 1.5 40.5T386-400Zm268 0h136q5-20 7.5-39.5T800-480q0-21-2.5-40.5T790-560H654q3 20 4.5 39.5T660-480q0 21-1.5 40.5T654-400Zm-16-240h118q-29-50-72.5-87T584-782q18 33 31.5 68.5T638-640Zm-234 0h152q-12-44-31-83t-45-75q-26 36-45 75t-31 83Zm-200 0h118q9-38 22.5-73.5T376-782q-56 18-99.5 55T204-640Z"/></svg>';
+  // language picker: a dropdown in the top bar, and a row of buttons inside the hamburger menu
+  const LANG_ICON = '<i class="ico" aria-hidden="true">\udb81\uddca</i>'; // Nerd Font "translate" icon
   const header = document.querySelector("header.nav");
   if (header && !header.querySelector(".lang-menu")) {
     const menu = document.createElement("div");
     menu.className = "lang-menu";
     menu.innerHTML = `
-      <button type="button" class="lang-btn" aria-haspopup="menu" aria-expanded="false" data-i18n-aria="lang.label">${GLOBE}<span class="lang-current"></span></button>
+      <button type="button" class="lang-btn" aria-haspopup="menu" aria-expanded="false" data-i18n-aria="lang.label">${LANG_ICON}<span class="lang-current"></span></button>
       <div class="lang-list" role="menu" hidden>
         ${LANGS.map(([k, short, name]) => `<button type="button" role="menuitemradio" data-lang="${k}" aria-checked="false"><span class="lang-code">${short}</span>${name}</button>`).join("")}
       </div>`;
@@ -145,7 +145,7 @@ window.I18N = (() => {
       row.className = "lang-row";
       row.setAttribute("role", "group");
       row.dataset.i18nAria = "lang.label";
-      row.innerHTML = GLOBE + LANGS.map(([k, short]) => `<button type="button" data-lang="${k}" aria-pressed="false">${short}</button>`).join("");
+      row.innerHTML = LANG_ICON + LANGS.map(([k, short]) => `<button type="button" data-lang="${k}" aria-pressed="false">${short}</button>`).join("");
       row.addEventListener("click", (e) => { const b = e.target.closest("button[data-lang]"); if (b) set(b.dataset.lang); });
       nav.appendChild(row);
     }

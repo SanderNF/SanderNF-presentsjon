@@ -461,7 +461,7 @@
 
       const statsLines = (stats) => {
         const LABELS = { stars: "stars", commits: api.commitsAll ? "commits" : "commits (last year)", prs: "pull requests", issues: "issues", contribs: "contributed to (last year)" };
-        const ICONS = { stars: "★", commits: "⎇", prs: "⇄", issues: "◎", contribs: "⬡" };
+        const ICONS = { commits: "", prs: "", stars: "", issues: "", contribs: "󱇯" };
         const width = Math.max(...stats.map(([id]) => LABELS[id].length)) + 4;
         return stats.map(([id, v]) => {
           const dots = " " + ".".repeat(width - LABELS[id].length) + " ";
@@ -717,10 +717,10 @@
     // launch sequence
     const ov = document.createElement("div");
     ov.className = "nuke";
-    ov.innerHTML = `<div class="nuke-warn">⚠ NUCLEAR LAUNCH DETECTED ⚠</div><div class="nuke-count"></div>`;
+    ov.innerHTML = `<div class="nuke-warn"> NUCLEAR LAUNCH DETECTED </div><div class="nuke-count"></div>`;
     document.body.appendChild(ov);
     for (const n of ["3", "2", "1"]) { ov.querySelector(".nuke-count").textContent = n; await sleep(650); }
-    ov.innerHTML = `<div class="shake"><pre class="nuke-cloud">${esc(CLOUD_TEXT)}</pre><div class="nuke-warn">💥 KABOOM 💥</div></div>`;
+    ov.innerHTML = `<div class="shake"><pre class="nuke-cloud">${esc(CLOUD_TEXT)}</pre><div class="nuke-warn"> KABOOM </div></div>`;
     ov.classList.add("boom");
     await sleep(2400);
     ov.remove();

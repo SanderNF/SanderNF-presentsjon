@@ -6,29 +6,29 @@ How the homelab is wired, from the router to the server. See also the **homelab*
 flowchart TD
     subgraph living["Living room"]
         direction TB
-        router["Router"]
-        unifi["UniFi 8-port PoE switch"]
+        router["󰑩 Router"]
+        unifi[" UniFi 8-port PoE switch"]
     end
 
     subgraph myroom["My room"]
         direction TB
-        mesh["Mesh node"]
-        desktop["Main desktop"]
+        mesh[" Mesh node"]
+        desktop["󰟀 Main desktop"]
     end
 
-    subgraph rack["Server rack"]
+    subgraph rack[" Server rack"]
         direction TB
         subgraph switches[" "]
             direction LR
-            webview["Cisco WebView<br/>16-port gigabit switch"]
-            catalyst["Cisco Catalyst<br/>48-port PoE switch<br/><i>model TBD</i>"]
+            webview[" Cisco WebView<br/>16-port gigabit switch"]
+            catalyst[" Cisco Catalyst<br/>48-port PoE switch<br/><i>model TBD</i>"]
         end
-        pikvm["PiKVM<br/><i>out-of-band management</i>"]
-        proxmox["Proxmox server<br/><small>Minecraft · Palworld<br/>web server · Ollama<br/>Pi-hole · TrueNAS</small>"]
+        pikvm["󰢹 PiKVM<br/><i>out-of-band management</i>"]
+        proxmox[" Proxmox server<br/><small>󰍳 Minecraft · Palworld<br/>web server · Ollama<br/>󰷱 Pi-hole · TrueNAS</small>"]
     end
 
     router <--> unifi
-    bridge["wireless bridge"]:::linklabel
+    bridge["󱛆 wireless bridge"]:::linklabel
     router -.- bridge
     bridge -.- mesh
     mesh <--> desktop

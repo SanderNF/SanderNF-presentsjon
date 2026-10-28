@@ -6,29 +6,29 @@ Hvordan homelaben er koblet opp, fra ruteren til serveren. Se også **homelab**-
 flowchart TD
     subgraph living["Stue"]
         direction TB
-        router["Ruter"]
-        unifi["UniFi 8-ports PoE-switch"]
+        router["󰑩 Ruter"]
+        unifi[" UniFi 8-ports PoE-switch"]
     end
 
     subgraph myroom["Mitt rom"]
         direction TB
-        mesh["Mesh-node"]
-        desktop["Hoved-PC"]
+        mesh[" Mesh-node"]
+        desktop["󰟀 Hoved-PC"]
     end
 
-    subgraph rack["Serverrack"]
+    subgraph rack[" Serverrack"]
         direction TB
         subgraph switches[" "]
             direction LR
-            webview["Cisco WebView<br/>16-ports gigabit-switch"]
-            catalyst["Cisco Catalyst<br/>48-ports PoE-switch<br/><i>modell ukjent</i>"]
+            webview[" Cisco WebView<br/>16-ports gigabit-switch"]
+            catalyst[" Cisco Catalyst<br/>48-ports PoE-switch<br/><i>modell ukjent</i>"]
         end
-        pikvm["PiKVM<br/><i>fjernstyring</i>"]
-        proxmox["Proxmox-server<br/><small>Minecraft · Palworld<br/>webserver · Ollama<br/>Pi-hole · TrueNAS</small>"]
+        pikvm["󰢹 PiKVM<br/><i>fjernstyring</i>"]
+        proxmox[" Proxmox-server<br/><small>󰍳 Minecraft · Palworld<br/>webserver · Ollama<br/>󰷱 Pi-hole · TrueNAS</small>"]
     end
 
     router <--> unifi
-    bridge["trådløs bro"]:::linklabel
+    bridge["󱛆 trådløs bro"]:::linklabel
     router -.- bridge
     bridge -.- mesh
     mesh <--> desktop

@@ -97,7 +97,8 @@
   }
 
   // ---------- rendering ----------
-  const ICONS = { stars: "★", commits: "⎇", prs: "⇄", issues: "◎", contribs: "⬡" };
+  const I = window.SNF_ICONS || {};
+  const ICONS = { stars: I.star || "★", commits: I.commit || "⎇", prs: I.pr || "⇄", issues: I.issue || "◎", contribs: I.contrib || "⬡" };
   const bar = (file) => `<div class="win-bar"><i></i><i></i><i></i><span>${esc(file)}</span></div>`;
   const term = (body) => `<div class="code-card gh-term">${bar(`gh cards --user ${gh.username}`)}${body}</div>`;
   const cardBox = (c, inner) => `<figure class="code-card gh-card">${bar(c.file)}${inner}</figure>`;
@@ -126,7 +127,7 @@
           </ul>
         </div>
       </div>
-      <a class="gh-foot" href="https://github.com/${encodeURIComponent(gh.username)}" target="_blank" rel="noopener">${window.SNF_ICONS?.github || ""}<span>github.com/${esc(gh.username)}</span></a>`);
+      <a class="gh-foot" href="https://github.com/${encodeURIComponent(gh.username)}" target="_blank" rel="noopener">${window.SNF_ICON?.("github") || ""}<span>github.com/${esc(gh.username)}</span></a>`);
     // grow the bars when the panel scrolls into view
     const el = root.querySelector(".gh-term");
     new IntersectionObserver((entries, io) => {
@@ -155,7 +156,7 @@
     if (state === "svg") return renderSvg();
     if (state === "images") return renderImages();
     const line = state === "error"
-      ? `<span class="t-err">${esc(t("gh.error"))}</span> <button type="button" class="gh-retry">${esc(t("gh.retry"))}</button>`
+      ? `<span class="t-err">${window.SNF_ICON?.("warning") || ""}${esc(t("gh.error"))}</span> <button type="button" class="gh-retry">${esc(t("gh.retry"))}</button>`
       : `<span class="t-dim">${esc(t("gh.loading"))}</span><span class="caret">█</span>`;
     root.innerHTML = term(`<p class="gh-loading"><span class="prompt">$</span> gh cards ${line}</p>`);
     root.querySelector(".gh-retry")?.addEventListener("click", load);

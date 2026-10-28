@@ -405,3 +405,6 @@ FodyWeavers.xsd
 
 # Rust build output for the web server
 server/target/
+
+# Nerd Font source TTFs (~2.5 MB each); only the built WOFF2 subsets are served
+assets/fonts/src/
