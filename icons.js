@@ -13,7 +13,7 @@ window.SNF_ICONS = {
   email: "󱡯", discord: "", arch: "󰣇", linux: "", apple: "󰀶",
   terminal: "",
   photos: "󰣌", camera: "", cameraLocation: "󱦨", aperture: "󰄄", shutter: "󰭪", iso: "󱝊", focal: "󰄄",
-  pdf: "", mapMarker: "󰍎", link: "", web: "󰖟", wifi: "󱛆",
+  pdf: "", mapMarker: "󰟙", link: "", web: "󰖟", wifi: "󱛆",
   ethernet: "󰈀", networkSwitch: "", remoteDesktop: "󰢹",
   briefcase: "󱒕", graduation: "", robot: "󱚣", record: "󰑋",
   pihole: "󰷱", minecraft: "󰍳",
